@@ -60,6 +60,7 @@ header p  { font-size: 12px; color: #64748b; margin-top: 2px; }
 .container { max-width: 1400px; margin: 0 auto; padding: 32px 40px; }
 
 .kpis { display: grid; gap: 18px; margin-bottom: 28px; }
+.kpis-5 { grid-template-columns: repeat(5, 1fr); }
 .kpis-4 { grid-template-columns: repeat(4, 1fr); }
 .kpis-3 { grid-template-columns: repeat(3, 1fr); }
 .kpi {
@@ -118,7 +119,7 @@ header p  { font-size: 12px; color: #64748b; margin-top: 2px; }
 .empty-state p  { font-size: 14px; }
 
 @media (max-width: 900px) {
-  .kpis-4, .kpis-3 { grid-template-columns: 1fr 1fr; }
+  .kpis-5, .kpis-4, .kpis-3 { grid-template-columns: 1fr 1fr; }
   .grid-2, .grid-3 { grid-template-columns: 1fr; }
   .container { padding: 20px; }
   .tab-nav { padding: 0 20px; }
@@ -184,9 +185,10 @@ footer { text-align: center; padding: 24px; color: #334155; font-size: 12px; bor
 <!-- LEGAL CONTROL -->
 <div class="tab-panel" id="panel-lc">
 <div class="container">
-  <div class="kpis kpis-4">
+  <div class="kpis kpis-5">
     <div class="kpi purple"><div class="kpi-icon">💰</div><div class="kpi-label">Total Investido</div><div class="kpi-value">R$ 17,6k</div><div class="kpi-sub">Jun/25 – Fev/26</div></div>
     <div class="kpi blue"><div class="kpi-icon">👥</div><div class="kpi-label">Total de Leads</div><div class="kpi-value">295</div><div class="kpi-sub">Pagos + Orgânicos</div></div>
+    <div class="kpi blue"><div class="kpi-icon">🎯</div><div class="kpi-label">Total de SQLs</div><div class="kpi-value">44</div><div class="kpi-sub">Leads qualificados p/ venda</div></div>
     <div class="kpi green"><div class="kpi-icon">📝</div><div class="kpi-label">Contratos Fechados</div><div class="kpi-value">4</div><div class="kpi-sub">Ticket médio R$ 900</div></div>
     <div class="kpi orange"><div class="kpi-icon">💵</div><div class="kpi-label">LTV Projetado</div><div class="kpi-value">R$ 86,4k</div><div class="kpi-sub">4 contratos × R$ 21.600</div></div>
   </div>
@@ -214,9 +216,10 @@ footer { text-align: center; padding: 24px; color: #334155; font-size: 12px; bor
 <!-- LEGAL ÉTICA -->
 <div class="tab-panel" id="panel-le">
 <div class="container">
-  <div class="kpis kpis-4">
+  <div class="kpis kpis-5">
     <div class="kpi green"><div class="kpi-icon">💰</div><div class="kpi-label">Total Investido</div><div class="kpi-value">R$ 12,8k</div><div class="kpi-sub">Jun/25 – Fev/26</div></div>
     <div class="kpi blue"><div class="kpi-icon">👥</div><div class="kpi-label">Total de Leads</div><div class="kpi-value">1.230</div><div class="kpi-sub">Pagos + Orgânicos</div></div>
+    <div class="kpi blue"><div class="kpi-icon">🎯</div><div class="kpi-label">Total de SQLs</div><div class="kpi-value">42</div><div class="kpi-sub">Leads qualificados p/ venda</div></div>
     <div class="kpi green"><div class="kpi-icon">📝</div><div class="kpi-label">Contratos Fechados</div><div class="kpi-value">9</div><div class="kpi-sub">Ticket médio R$ 500</div></div>
     <div class="kpi orange"><div class="kpi-icon">💵</div><div class="kpi-label">LTV Projetado</div><div class="kpi-value">R$ 54k</div><div class="kpi-sub">9 contratos × R$ 6.000</div></div>
   </div>
