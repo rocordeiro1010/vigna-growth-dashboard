@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apresentação Growth Marketing — Grupo Vigna</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%236366f1'/%3E%3Cstop offset='1' stop-color='%238b5cf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='url(%23g)'/%3E%3Crect x='4' y='6' width='24' height='16' rx='2' fill='white' opacity='0.15'/%3E%3Crect x='4' y='6' width='24' height='16' rx='2' fill='none' stroke='white' stroke-width='1.5' opacity='0.9'/%3E%3Crect x='7' y='9' width='18' height='10' rx='1' fill='white' opacity='0.9'/%3E%3Cline x1='16' y1='22' x2='16' y2='27' stroke='white' stroke-width='1.5' opacity='0.8'/%3E%3Cline x1='11' y1='27' x2='21' y2='27' stroke='white' stroke-width='1.5' stroke-linecap='round' opacity='0.8'/%3E%3C/svg%3E">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0f1117;color:#e2e8f0;overflow:hidden;height:100vh;width:100vw;}
+
+/* SLIDES */
+.slides{position:relative;width:100vw;height:100vh;overflow:hidden;}
+.slide{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;opacity:0;pointer-events:none;}
+
+/* PROGRESS */
+#progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#6366f1,#8b5cf6);transition:width .4s ease;z-index:200;}
+
+/* NAV */
+.nav{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:12px;z-index:200;background:rgba(19,22,31,.92);backdrop-filter:blur(12px);border:1px solid #2d3748;border-radius:50px;padding:7px 18px;}
+.nb{background:none;border:none;color:#94a3b8;cursor:pointer;font-size:15px;padding:4px 8px;transition:color .2s;line-height:1;}
+.nb:hover{color:#f1f5f9;}.nb:disabled{color:#334155;cursor:default;}
+.sc{font-size:11px;color:#64748b;font-weight:600;min-width:44px;text-align:center;}
+.dots{display:flex;gap:5px;}
+.dot{width:6px;height:6px;border-radius:50%;background:#2d3748;transition:background .2s,transform .2s;cursor:pointer;position:relative;}
+.dot.active{background:#6366f1;transform:scale(1.4);}
+.dot-label{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);background:#1e2535;border:1px solid #2d3748;border-radius:6px;padding:4px 9px;font-size:9px;font-weight:600;color:#94a3b8;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s;z-index:400;}
+.dot:hover .dot-label{opacity:1;}
+
+/* INNER */
+.si{flex:1;display:flex;flex-direction:column;padding:40px 72px 68px;max-width:1400px;margin:0 auto;width:100%;overflow:hidden;}
+
+/* SLIDE HEADER */
+.sn{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:#6366f1;margin-bottom:5px;}
+.st{font-size:28px;font-weight:800;color:#f1f5f9;line-height:1.15;}
+.ss{font-size:13px;color:#64748b;margin-top:4px;}
+.sh{margin-bottom:24px;}
+
+/* KPIS */
+.kpis{display:grid;gap:12px;}
+.k4{grid-template-columns:repeat(4,1fr);}
+.k5{grid-template-columns:repeat(5,1fr);}
+.k3{grid-template-columns:repeat(3,1fr);}
+.k2{grid-template-columns:repeat(2,1fr);}
+.kpi{background:#1a1f2e;border:1px solid #2d3748;border-radius:12px;padding:16px;position:relative;overflow:visible;
+  transition:transform .22s ease, box-shadow .22s ease, border-color .22s ease;cursor:default;}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0;}
+.kpi.p::before{background:linear-gradient(90deg,#6366f1,#8b5cf6);}
+.kpi.g::before{background:linear-gradient(90deg,#10b981,#34d399);}
+.kpi.b::before{background:linear-gradient(90deg,#3b82f6,#60a5fa);}
+.kpi.o::before{background:linear-gradient(90deg,#f59e0b,#fbbf24);}
+.kpi.p:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(99,102,241,.22);border-color:rgba(99,102,241,.4);}
+.kpi.g:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(16,185,129,.22);border-color:rgba(16,185,129,.4);}
+.kpi.b:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(59,130,246,.22);border-color:rgba(59,130,246,.4);}
+.kpi.o:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(245,158,11,.22);border-color:rgba(245,158,11,.4);}
+.ki{font-size:20px;margin-bottom:6px;}
+.kl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#64748b;}
+.kv{font-size:22px;font-weight:800;color:#f1f5f9;margin:3px 0;line-height:1;}
+.ks{font-size:10px;color:#475569;}
+
+/* TOOLTIP */
+.kpi-tip{position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%);
+  background:#1e2535;border:1px solid rgba(99,102,241,.35);border-radius:8px;padding:8px 13px;
+  font-size:10px;color:#94a3b8;white-space:nowrap;line-height:1.6;
+  opacity:0;pointer-events:none;transition:opacity .18s ease;z-index:500;
+  box-shadow:0 8px 24px rgba(0,0,0,.4);}
+.kpi-tip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);
+  border:5px solid transparent;border-top-color:#1e2535;}
+.kpi:hover .kpi-tip{opacity:1;}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+.g65{display:grid;grid-template-columns:1.6fr 1fr;gap:16px;}
+.g56{display:grid;grid-template-columns:1fr 1.6fr;gap:16px;}
+
+/* CARDS */
+.card{background:#1a1f2e;border:1px solid #2d3748;border-radius:12px;padding:16px;min-width:0;overflow:hidden;
+  transition:border-color .22s ease;}
+.card:hover{border-color:#3d4f6b;}
+.ct{font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px;}
+
+/* SECTION LINE */
+.sec{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#6366f1;margin:14px 0 10px;display:flex;align-items:center;gap:8px;}
+.sec::after{content:'';flex:1;height:1px;background:#2d3748;}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;font-size:12px;}
+.tbl th{padding:7px 12px;text-align:left;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#64748b;border-bottom:1px solid #2d3748;}
+.tbl td{padding:9px 12px;border-bottom:1px solid #1e2535;color:#cbd5e1;transition:background .15s;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tbody tr:not(.tr2):hover td{background:rgba(99,102,241,.06);}
+.num{text-align:right;font-variant-numeric:tabular-nums;}
+.pos{color:#34d399;font-weight:600;}
+.tr2 td{font-weight:700;color:#f1f5f9;border-top:1px solid #2d3748!important;border-bottom:none!important;background:rgba(99,102,241,.05);}
+
+/* BAR */
+.bw{background:#0f1117;border-radius:3px;height:4px;margin-top:5px;}
+.bf{height:4px;border-radius:3px;transition:width 1s ease;}
+
+/* INSIGHT CARDS */
+.ins{background:#1a1f2e;border:1px solid #2d3748;border-radius:12px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start;
+  transition:transform .22s ease, border-color .22s ease, box-shadow .22s ease;}
+.ins:hover{transform:translateY(-3px);border-color:#3d4f6b;box-shadow:0 8px 24px rgba(0,0,0,.3);}
+.ii{font-size:22px;flex-shrink:0;margin-top:1px;}
+.itl{font-size:12px;font-weight:700;color:#f1f5f9;margin-bottom:3px;}
+.itx{font-size:11px;color:#64748b;line-height:1.5;}
+.tag{display:inline-block;font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;text-transform:uppercase;letter-spacing:.05em;margin-top:5px;}
+.tg{background:rgba(16,185,129,.2);color:#34d399;}
+.tp{background:rgba(99,102,241,.2);color:#818cf8;}
+.to{background:rgba(245,158,11,.2);color:#fbbf24;}
+.tb{background:rgba(59,130,246,.2);color:#60a5fa;}
+
+/* FUNNEL */
+.funnel{display:flex;flex-direction:column;align-items:center;gap:5px;padding:8px 0;}
+.fs{border-radius:8px;padding:10px 20px;display:flex;justify-content:space-between;align-items:center;width:0%;overflow:hidden;
+  transition:width .9s cubic-bezier(.4,0,.2,1), opacity .4s ease;}
+.fs.funnel-ready{opacity:0;}
+.fsl{font-size:12px;font-weight:700;color:rgba(255,255,255,.9);white-space:nowrap;}
+.fsv{font-size:22px;font-weight:800;color:white;line-height:1;}
+.fsp{font-size:10px;color:rgba(255,255,255,.6);margin-top:2px;text-align:right;}
+.funnel-connector{width:4px;height:10px;background:#2d3748;border-radius:2px;transition:opacity .3s;}
+
+/* COVER */
+.glow{position:absolute;inset:0;background:radial-gradient(ellipse at 15% 50%,rgba(99,102,241,.18) 0%,transparent 55%),radial-gradient(ellipse at 85% 20%,rgba(139,92,246,.12) 0%,transparent 50%),radial-gradient(ellipse at 50% 90%,rgba(16,185,129,.06) 0%,transparent 40%);pointer-events:none;animation:glowBreath 6s ease-in-out infinite;}
+@keyframes glowBreath{0%,100%{opacity:.7;}50%{opacity:1;}}
+.logo{width:56px;height:56px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:900;color:white;margin-bottom:22px;}
+.cover-title{font-size:52px;font-weight:900;color:#f1f5f9;line-height:1.1;margin-bottom:8px;}
+.cover-sub{font-size:18px;color:#64748b;margin-bottom:6px;}
+.cover-period{font-size:13px;color:#475569;margin-bottom:36px;}
+.divider{width:60px;height:3px;background:linear-gradient(90deg,#6366f1,#8b5cf6);border-radius:2px;margin:20px 0;transform-origin:left;transform:scaleX(0);}
+.brand-pill{display:inline-flex;align-items:center;gap:8px;background:#1a1f2e;border:1px solid #2d3748;border-radius:50px;padding:6px 14px;font-size:11px;color:#64748b;font-weight:600;margin-bottom:28px;}
+.brand-dot{width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6);}
+
+/* HIGHLIGHT BOX */
+.hbox{background:linear-gradient(135deg,rgba(99,102,241,.15),rgba(139,92,246,.08));border:1px solid rgba(99,102,241,.3);border-radius:12px;padding:16px 18px;transition:border-color .22s, box-shadow .22s;}
+.hbox:hover{border-color:rgba(99,102,241,.5);box-shadow:0 8px 24px rgba(99,102,241,.12);}
+.hbox-v{font-size:36px;font-weight:900;color:#818cf8;line-height:1;}
+.hbox-l{font-size:11px;color:#64748b;margin-top:4px;}
+
+/* STAGGER ANIMATION */
+@keyframes staggerUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.s-item{opacity:0;}
+.s-item.s-go{animation:staggerUp .45s ease forwards;}
+
+/* COVER ENTRANCE */
+@keyframes coverFadeUp{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
+@keyframes coverFadeIn{from{opacity:0;}to{opacity:1;}}
+@keyframes coverDivider{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+.cover-in-1{animation:coverFadeIn .5s ease .15s forwards;opacity:0;}
+.cover-in-2{animation:coverFadeUp .55s ease .3s forwards;opacity:0;}
+.cover-in-3{animation:coverFadeUp .55s ease .5s forwards;opacity:0;}
+.cover-in-4{animation:coverFadeIn .5s ease .65s forwards;opacity:0;}
+.cover-in-5{animation:coverFadeIn .5s ease .8s forwards;opacity:0;}
+.cover-in-6{animation:coverDivider .5s ease 1s forwards;transform:scaleX(0);}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<div class="slides">
+
+<!-- ═══ SLIDE 1 · CAPA ═══ -->
+<div class="slide active" id="s1">
+  <div class="glow"></div>
+  <div class="si" style="justify-content:center;">
+    <div class="brand-pill cover-in-1"><div class="brand-dot"></div>Grupo Vigna</div>
+    <div class="logo cover-in-2">V</div>
+    <div class="cover-title cover-in-3">Growth Marketing<br><span style="color:#6366f1;">Dashboard</span></div>
+    <div class="cover-sub cover-in-4">Análise de Performance por Marca</div>
+    <div class="cover-period cover-in-5">Período: Jun/25 – Fev/26 · Referência: Abril 2026</div>
+    <div class="divider cover-in-6"></div>
+    <div class="kpis k5" style="max-width:1060px;opacity:0;" id="cover-kpis">
+      <div class="kpi p">
+        <div class="kpi-tip">META · Google · LinkedIn</div>
+        <div class="ki">💰</div><div class="kl">Total Investido</div>
+        <div class="kv" data-count="42.7" data-fmt="R$ {n}k">R$ 42,7k</div>
+        <div class="ks">META + Google + LinkedIn</div>
+      </div>
+      <div class="kpi b">
+        <div class="kpi-tip">Pagos + Orgânicos · todas as marcas</div>
+        <div class="ki">👥</div><div class="kl">Leads Gerados</div>
+        <div class="kv" data-count="1052" data-fmt="n">1.052</div>
+        <div class="ks">Pagos + Orgânicos</div>
+      </div>
+      <div class="kpi g">
+        <div class="kpi-tip">44 Legal Control · 42 Legal Ética · 1 Vigna Tax</div>
+        <div class="ki">🎯</div><div class="kl">SQLs</div>
+        <div class="kv" data-count="87" data-fmt="n">87</div>
+        <div class="ks">Oportunidades qualificadas</div>
+      </div>
+      <div class="kpi g">
+        <div class="kpi-tip">4 Legal Control · 9 Legal Ética</div>
+        <div class="ki">📝</div><div class="kl">Contratos Fechados</div>
+        <div class="kv" data-count="13" data-fmt="n">13</div>
+        <div class="ks">Legal Control + Legal Ética</div>
+      </div>
+      <div class="kpi o">
+        <div class="kpi-tip">R$ 86,4k Legal Control · R$ 54k Legal Ética</div>
+        <div class="ki">📈</div><div class="kl">LTV Projetado</div>
+        <div class="kv" data-count="140" data-fmt="R$ {n}k">R$ 140k</div>
+        <div class="ks">Retorno estimado total</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 2 · ROI CONSOLIDADO ═══ -->
+<div class="slide" id="s2">
+  <div class="si">
+    <div class="sh s-item">
+      <div class="sn">02 · Resultado</div>
+      <div class="st">Retorno sobre Investimento</div>
+      <div class="ss">Para cada R$ 1 investido, o Grupo Vigna gerou R$ 3,29 em LTV projetado</div>
+    </div>
+    <div class="g65 s-item" style="flex:1;min-height:0;">
+      <div class="card" style="display:flex;flex-direction:column;">
+        <div class="ct">Investimento vs LTV Projetado por Empresa</div>
+        <div style="flex:1;min-height:0;"><canvas id="c-roi"></canvas></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="hbox s-item">
+          <div class="hbox-v">229%</div>
+          <div class="hbox-l">ROI Consolidado · R$ 42,7k → R$ 140k</div>
+        </div>
+        <div class="kpi g s-item" style="padding:14px;">
+          <div class="kl">Melhor ROI — Legal Ética</div>
+          <div class="kv" style="font-size:26px;color:#34d399;">323%</div>
+          <div class="ks">R$ 12.783 → R$ 54.000 LTV</div>
+        </div>
+        <div class="kpi p s-item" style="padding:14px;">
+          <div class="kl">Maior LTV/Contrato — Legal Control</div>
+          <div class="kv" style="font-size:26px;">R$ 21.600</div>
+          <div class="ks">Ticket premium · 311% ROI</div>
+        </div>
+        <div class="ins s-item">
+          <div class="ii">💡</div>
+          <div>
+            <div class="itl">Por que o ROI é projetado?</div>
+            <div class="itx">O LTV considera a receita recorrente durante todo o ciclo de vida do cliente, não apenas o primeiro pagamento.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 3 · COMPARATIVO ═══ -->
+<div class="slide" id="s3">
+  <div class="si">
+    <div class="sh s-item">
+      <div class="sn">03 · Comparativo</div>
+      <div class="st">Performance por Empresa</div>
+      <div class="ss">Visão consolidada de eficiência e retorno por marca · Jun/25 – Fev/26</div>
+    </div>
+    <div class="card s-item" style="flex:1;overflow:auto;">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>Empresa</th>
+            <th class="num">Investido</th>
+            <th class="num">Leads</th>
+            <th class="num">SQLs</th>
+            <th class="num">Contratos</th>
+            <th class="num">Custo/Contrato</th>
+            <th class="num">LTV Proj.</th>
+            <th class="num">ROI</th>
+            <th style="min-width:120px;">Participação</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:600;color:#818cf8;">Legal Control</td>
+            <td class="num">R$ 20.993</td>
+            <td class="num">295</td>
+            <td class="num pos">44</td>
+            <td class="num pos">4</td>
+            <td class="num">R$ 5.248</td>
+            <td class="num pos">R$ 86.400</td>
+            <td class="num pos">311%</td>
+            <td><div class="bw"><div class="bf" style="width:49.2%;background:#6366f1;"></div></div></td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;color:#34d399;">Legal Ética</td>
+            <td class="num">R$ 12.783</td>
+            <td class="num">1.230</td>
+            <td class="num pos">42</td>
+            <td class="num pos">9</td>
+            <td class="num">R$ 1.420</td>
+            <td class="num pos">R$ 54.000</td>
+            <td class="num pos">323%</td>
+            <td><div class="bw"><div class="bf" style="width:29.9%;background:#10b981;"></div></div></td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;color:#60a5fa;">Vigna Tax</td>
+            <td class="num">R$ 5.498</td>
+            <td class="num">178</td>
+            <td class="num pos">1</td>
+            <td class="num pos">1</td>
+            <td class="num">R$ 5.498</td>
+            <td class="num" style="color:#475569;">—</td>
+            <td class="num" style="color:#475569;">—</td>
+            <td><div class="bw"><div class="bf" style="width:12.9%;background:#3b82f6;"></div></div></td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;color:#fbbf24;">Vigna A.A</td>
+            <td class="num">R$ 3.436</td>
+            <td class="num">—</td>
+            <td class="num" style="color:#475569;">—</td>
+            <td class="num" style="color:#475569;">—</td>
+            <td class="num" style="color:#475569;">—</td>
+            <td class="num" style="color:#475569;">—</td>
+            <td class="num" style="color:#475569;">—</td>
+            <td><div class="bw"><div class="bf" style="width:8%;background:#f59e0b;"></div></div></td>
+          </tr>
+          <tr>
+            <td style="color:#475569;">Compliance Control</td>
+            <td class="num" style="color:#475569;">—</td>
+            <td class="num" style="color:#475569;">—</td>
+            <td class="num" style="color:#475569;">—</td>
+            <td class="num" style="color:#475569;">—</td>
+            <td class="num" style="color:#475569;">—</td>
+            <td class="num" style="color:#475569;">—</td>
+            <td class="num" style="color:#475569;">—</td>
+            <td><div class="bw"><div class="bf" style="width:0%;background:#64748b;"></div></div></td>
+          </tr>
+          <tr>
+            <td style="color:#475569;">Legal Hub</td>
+            <td class="num" style="color:#475569;">—</td>
+            <td class="num" style="color:#475569;">—</td>
+            <td class="num" style="color:#475569;">—</td>
+            <td class="num" style="color:#475569;">—</td>
+            <td class="num" style="color:#475569;">—</td>
+            <td class="num" style="color:#475569;">—</td>
+            <td class="num" style="color:#475569;">—</td>
+            <td><div class="bw"><div class="bf" style="width:0%;background:#64748b;"></div></div></td>
+          </tr>
+          <tr class="tr2">
+            <td>TOTAL / MÉDIA</td>
+            <td class="num">R$ 42.710</td>
+            <td class="num">1.703</td>
+            <td class="num pos">87</td>
+            <td class="num pos">13</td>
+            <td class="num pos">R$ 2.598</td>
+            <td class="num pos">R$ 140.400</td>
+            <td class="num pos">229%</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="g3 s-item" style="margin-top:14px;">
+      <div class="ins"><div class="ii">🏆</div><div><div class="itl">Melhor custo/contrato</div><div class="itx">Legal Ética fecha contratos por R$ 1.420 cada — 3,7× mais barato que Legal Control.</div><span class="tag tg">Eficiência</span></div></div>
+      <div class="ins"><div class="ii">💎</div><div><div class="itl">Maior valor/contrato</div><div class="itx">Legal Control gera R$ 21.600 por contrato — 3,6× maior LTV unitário que Legal Ética.</div><span class="tag tp">Premium</span></div></div>
+      <div class="ins"><div class="ii">🚀</div><div><div class="itl">Tax &amp; A.A em fase inicial</div><div class="itx">Vigna Tax tem 1 contrato e crescimento orgânico puxado por vídeos — site e SEO ainda precisam evoluir. A.A tem base orgânica sólida. Potencial inexplorado.</div><span class="tag to">Oportunidade</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 4 · FUNIL ═══ -->
+<div class="slide" id="s4">
+  <div class="si">
+    <div class="sh s-item">
+      <div class="sn">04 · Funil</div>
+      <div class="st">Do Lead ao Contrato</div>
+      <div class="ss">Funil consolidado — Legal Control + Legal Ética · Jun/25 – Fev/26</div>
+    </div>
+    <div class="g2 s-item" style="flex:1;min-height:0;align-items:center;">
+      <div class="card" style="padding:24px 28px;">
+        <div class="ct">Funil de Conversão</div>
+        <div class="funnel">
+          <div class="fs funnel-ready" data-w="100%" style="background:rgba(99,102,241,.35);">
+            <div class="fsl">Leads Gerados</div>
+            <div><div class="fsv">1.525</div><div class="fsp">100%</div></div>
+          </div>
+          <div class="funnel-connector"></div>
+          <div class="fs funnel-ready" data-w="80%" style="background:rgba(99,102,241,.55);">
+            <div class="fsl">MQLs</div>
+            <div><div class="fsv">262</div><div class="fsp">17,2%</div></div>
+          </div>
+          <div class="funnel-connector"></div>
+          <div class="fs funnel-ready" data-w="55%" style="background:rgba(99,102,241,.75);">
+            <div class="fsl">SQLs</div>
+            <div><div class="fsv">86</div><div class="fsp">5,6%</div></div>
+          </div>
+          <div class="funnel-connector"></div>
+          <div class="fs funnel-ready" data-w="30%" style="background:rgba(251,146,60,.85);">
+            <div class="fsl">Contratos</div>
+            <div><div class="fsv">13</div><div class="fsp">0,9%</div></div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="kpi p s-item"><div class="kl">Custo Médio por Lead</div><div class="kv">R$ 22</div><div class="ks">(LC R$ 60 · LE R$ 10)</div></div>
+        <div class="kpi b s-item"><div class="kl">Custo por SQL</div><div class="kv">R$ 389</div><div class="ks">Lead qualificado para venda</div></div>
+        <div class="kpi o s-item"><div class="kl">Custo por Contrato</div><div class="kv">R$ 2.598</div><div class="ks">Média das 2 marcas ativas</div></div>
+        <div class="kpi g s-item"><div class="kl">Taxa Lead → Contrato</div><div class="kv">0,85%</div><div class="ks">Benchmark B2B legal: 1–3%</div></div>
+        <div class="ins s-item">
+          <div class="ii">📌</div>
+          <div>
+            <div class="itl">Gargalo: MQL → SQL (17%→5,6%)</div>
+            <div class="itx">Maior perda ocorre na qualificação comercial. Melhorar o briefing de entrada e o follow-up pode dobrar os SQLs.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 5 · LEGAL CONTROL ═══ -->
+<div class="slide" id="s5">
+  <div class="si">
+    <div class="sh s-item">
+      <div class="sn">05 · Legal Control</div>
+      <div class="st">Curva de Aprendizado em Ação</div>
+      <div class="ss">R$ 20.993 investidos · 4 contratos fechados · 311% ROI projetado</div>
+    </div>
+    <div class="g65 s-item" style="flex:1;min-height:0;">
+      <div class="card" style="display:flex;flex-direction:column;">
+        <div class="ct">Custo por Lead ao Longo do Tempo (R$)</div>
+        <div style="flex:1;min-height:0;"><canvas id="c-lc-cpl"></canvas></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="kpis k2">
+          <div class="kpi p s-item"><div class="kl">Total Leads</div><div class="kv">295</div><div class="ks">Jul/25 – Fev/26</div></div>
+          <div class="kpi g s-item"><div class="kl">Contratos</div><div class="kv">4</div><div class="ks">R$ 21.600 LTV cada</div></div>
+        </div>
+        <div class="kpis k2">
+          <div class="kpi b s-item"><div class="kl">CPL Pico</div><div class="kv">R$ 501</div><div class="ks">Jul/25 — início</div></div>
+          <div class="kpi o s-item"><div class="kl">CPL Atual</div><div class="kv">R$ 52</div><div class="ks">Fev/26 — otimizado</div></div>
+        </div>
+        <div class="ins s-item">
+          <div class="ii">📉</div>
+          <div>
+            <div class="itl">90% de redução no custo por lead</div>
+            <div class="itx">De R$ 501 (Jul/25) para R$ 10,71 (Nov/25) e estabilizando em ~R$ 52. As campanhas encontraram seu ponto ótimo.</div>
+            <span class="tag tg">Maturidade</span>
+          </div>
+        </div>
+        <div class="ins s-item">
+          <div class="ii">🎯</div>
+          <div>
+            <div class="itl">44 SQLs gerados em 9 meses</div>
+            <div class="itx">Taxa SQL: 15% dos leads se tornam qualificados para venda — acima da média B2B de 10–12%.</div>
+            <span class="tag tp">Qualidade</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 6 · LEGAL ÉTICA ═══ -->
+<div class="slide" id="s6">
+  <div class="si">
+    <div class="sh s-item">
+      <div class="sn">06 · Legal Ética</div>
+      <div class="st">Volume com Eficiência</div>
+      <div class="ss">R$ 12.783 investidos · 9 contratos fechados · 323% ROI projetado</div>
+    </div>
+    <div class="g65 s-item" style="flex:1;min-height:0;">
+      <div class="card" style="display:flex;flex-direction:column;">
+        <div class="ct">Leads por Mês + Contratos Fechados</div>
+        <div style="flex:1;min-height:0;"><canvas id="c-le"></canvas></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="kpis k2">
+          <div class="kpi g s-item"><div class="kl">Total Leads</div><div class="kv">1.230</div><div class="ks">4× mais que LC</div></div>
+          <div class="kpi o s-item"><div class="kl">Contratos</div><div class="kv">9</div><div class="ks">R$ 6.000 LTV cada</div></div>
+        </div>
+        <div class="kpis k3">
+          <div class="kpi b s-item"><div class="kl">CPL Médio</div><div class="kv">R$ 10</div><div class="ks">Muito eficiente</div></div>
+          <div class="kpi g s-item"><div class="kl">SQLs</div><div class="kv">42</div><div class="ks">25% de MQL → SQL</div></div>
+          <div class="kpi p s-item"><div class="kl">Melhor CPL</div><div class="kv">R$ 4,61</div><div class="ks">Ago/25 — recorde</div></div>
+        </div>
+        <div class="ins s-item">
+          <div class="ii">⚡</div>
+          <div>
+            <div class="itl">Agosto 2025 — volume alto, qualidade zero</div>
+            <div class="itx">666 leads vieram da META, mas eram pessoas físicas querendo denunciar suas próprias empresas — não empresas buscando contratar um canal de denúncias. Público errado, produto certo. O criativo atraiu o lado B2C de um produto B2B.</div>
+            <span class="tag" style="background:rgba(239,68,68,.2);color:#f87171;">Leads inválidos</span>
+          </div>
+        </div>
+        <div class="ins s-item">
+          <div class="ii">🔑</div>
+          <div>
+            <div class="itl">Mais contratos, menor custo/contrato</div>
+            <div class="itx">R$ 1.420 por contrato — 3,7× mais barato que LC. Escalar LE tem o melhor custo de aquisição do portfólio.</div>
+            <span class="tag tg">Escalar</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 7 · ORGÂNICO ═══ -->
+<div class="slide" id="s7">
+  <div class="si">
+    <div class="sh s-item">
+      <div class="sn">07 · Canais Orgânicos</div>
+      <div class="st">Presença Orgânica — Ativo Silencioso</div>
+      <div class="ss">Vigna Tax e Vigna A.A crescem com autoridade própria, sem depender de mídia paga</div>
+    </div>
+    <div class="g2 s-item" style="flex:1;min-height:0;">
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="card" style="flex:1;display:flex;flex-direction:column;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+            <div>
+              <div class="ct" style="margin-bottom:2px;">Vigna Tax — Search Orgânico</div>
+              <div style="font-size:11px;color:#475569;">Jan/25 – Jan/26 · Sessões engajadas</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:20px;font-weight:800;color:#60a5fa;">+880%</div>
+              <div style="font-size:10px;color:#475569;">Jan→Dez/25</div>
+            </div>
+          </div>
+          <div style="flex:1;min-height:0;"><canvas id="c-tax"></canvas></div>
+        </div>
+        <div class="ins s-item">
+          <div class="ii">🔍</div>
+          <div>
+            <div class="itl">Tax: de 103 para 1.010 sessões em 1 ano</div>
+            <div class="itx">Crescimento puxado pela adoção de vídeos e reels — não por SEO ou qualidade de posts. Site e conteúdo escrito ainda são pontos fracos. Canal pago (Out/25) gerou 1 contrato no 1º mês, mas o potencial orgânico real depende de melhorar o site e aprofundar o conteúdo.</div>
+            <span class="tag to">Vídeo como alavanca</span>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="card" style="flex:1;display:flex;flex-direction:column;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+            <div>
+              <div class="ct" style="margin-bottom:2px;">Vigna A.A — Search Orgânico</div>
+              <div style="font-size:11px;color:#475569;">Jan/25 – Out/25 · Sessões engajadas</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:20px;font-weight:800;color:#fbbf24;">20.859</div>
+              <div style="font-size:10px;color:#475569;">Total acumulado</div>
+            </div>
+          </div>
+          <div style="flex:1;min-height:0;"><canvas id="c-aa"></canvas></div>
+        </div>
+        <div class="ins s-item">
+          <div class="ii">🌱</div>
+          <div>
+            <div class="itl">A.A: ~2.000 sessões/mês sem investir em ads</div>
+            <div class="itx">Autoridade orgânica consolidada. Ads foram descontinuados após Ago/25. Potencial de reativar com base qualificada.</div>
+            <span class="tag tg">Orgânico</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 8 · INSIGHTS ═══ -->
+<div class="slide" id="s8">
+  <div class="si">
+    <div class="sh s-item">
+      <div class="sn">08 · Insights &amp; Recomendações</div>
+      <div class="st">O que os Dados nos Dizem</div>
+      <div class="ss">6 aprendizados para escalar o crescimento do Grupo Vigna</div>
+    </div>
+    <div class="g2 s-item" style="flex:1;gap:12px;">
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="ins">
+          <div class="ii">🏅</div>
+          <div>
+            <div class="itl">Escale Legal Ética — melhor custo de aquisição</div>
+            <div class="itx">Com R$ 1.420 por contrato e volume de leads 4× maior que LC, LE é o canal com melhor alavancagem. Aumentar budget aqui tem o maior impacto imediato no número de contratos.</div>
+            <span class="tag tg">Alta prioridade</span>
+          </div>
+        </div>
+        <div class="ins">
+          <div class="ii">🔬</div>
+          <div>
+            <div class="itl">Revisar segmentação de Legal Ética na META</div>
+            <div class="itx">Os 666 leads de Ago/25 eram pessoas físicas querendo denunciar empresas — não compradores B2B. O criativo ativou o lado errado da audiência. Refinar targeting para decisores (RH, Compliance, Jurídico) e excluir personas PF.</div>
+            <span class="tag to">Corrigir segmentação</span>
+          </div>
+        </div>
+        <div class="ins">
+          <div class="ii">💎</div>
+          <div>
+            <div class="itl">Mantenha Legal Control — maior valor por contrato</div>
+            <div class="itx">Com LTV de R$ 21.600/contrato e CPL estabilizado em ~R$ 52, LC é o produto premium do portfólio. 311% ROI justifica manutenção e crescimento gradual.</div>
+            <span class="tag tp">Manter</span>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="ins">
+          <div class="ii">📈</div>
+          <div>
+            <div class="itl">Vigna Tax: intensifique vídeo e melhore o site</div>
+            <div class="itx">Search orgânico cresceu 880% em 12 meses, puxado por vídeos e reels. O site e SEO ainda são fracos — combinar produção de vídeo consistente com melhora do site pode acelerar o funil significativamente.</div>
+            <span class="tag tb">Crescer</span>
+          </div>
+        </div>
+        <div class="ins">
+          <div class="ii">🎯</div>
+          <div>
+            <div class="itl">Melhore a conversão MQL → SQL (17% → meta 25%)</div>
+            <div class="itx">O maior gargalo do funil está na qualificação comercial. Melhorar o processo de follow-up e briefing de entrada pode aumentar em ~50% o número de SQLs sem investir mais em mídia.</div>
+            <span class="tag tp">Funil</span>
+          </div>
+        </div>
+        <div class="ins">
+          <div class="ii">🌐</div>
+          <div>
+            <div class="itl">Ative Compliance Control e Legal Hub</div>
+            <div class="itx">Com a infraestrutura de growth já funcionando para 4 marcas, o custo marginal de ativar as 2 marcas restantes é baixo. O aprendizado de LC e LE pode ser aplicado desde o primeiro mês.</div>
+            <span class="tag to">Próxima fase</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /slides -->
+
+<!-- NAV -->
+<nav class="nav">
+  <button class="nb" id="pb" onclick="go(cur-1)" disabled>←</button>
+  <div class="dots" id="dotrow"></div>
+  <div class="sc" id="sc">1 / 8</div>
+  <button class="nb" id="nb" onclick="go(cur+1)">→</button>
+</nav>
+
+<script>
+const TOTAL = 8;
+const SLIDE_TITLES = ['Capa','ROI','Comparativo','Funil','Legal Control','Legal Ética','Orgânico','Insights'];
+let cur = 0;
+let transitioning = false;
+
+// ── NAV ──────────────────────────────────────────────────────────────────────
+function go(n) {
+  if (n < 0 || n >= TOTAL || transitioning) return;
+  transitioning = true;
+
+  const slides = document.querySelectorAll('.slide');
+  const outEl = slides[cur];
+  const inEl  = slides[n];
+  const dir   = n > cur ? 1 : -1;
+
+  // Exit outgoing
+  outEl.style.transition = 'opacity .32s ease, transform .32s ease';
+  outEl.style.transform  = `translateX(${dir * -55}px)`;
+  outEl.style.opacity    = '0';
+  outEl.classList.remove('active');
+  outEl.style.pointerEvents = 'none';
+
+  // Position incoming (no transition yet)
+  inEl.style.transition = 'none';
+  inEl.style.transform  = `translateX(${dir * 55}px)`;
+  inEl.style.opacity    = '0';
+  void inEl.offsetHeight; // reflow
+
+  // Animate incoming in
+  inEl.style.transition = 'opacity .35s ease, transform .35s ease';
+  inEl.style.transform  = 'translateX(0)';
+  inEl.style.opacity    = '1';
+  inEl.classList.add('active');
+  inEl.style.pointerEvents = 'all';
+
+  // Update UI
+  cur = n;
+  document.getElementById('sc').textContent = (cur+1) + ' / ' + TOTAL;
+  document.getElementById('progress').style.width = ((cur+1)/TOTAL*100) + '%';
+  document.getElementById('pb').disabled = cur === 0;
+  document.getElementById('nb').disabled = cur === TOTAL-1;
+  document.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active', i===cur));
+
+  // Trigger slide-specific animations
+  setTimeout(() => {
+    cleanup(outEl);
+    animateSlide(inEl, n);
+    transitioning = false;
+  }, 360);
+}
+
+function cleanup(slide) {
+  slide.style.transform = '';
+  slide.style.opacity   = '';
+  slide.style.transition= '';
+  // Reset funnel if leaving s4
+  if (slide.id === 's4') {
+    slide.querySelectorAll('.fs').forEach(f => {
+      f.style.transition = 'none';
+      f.style.width = '0%';
+      f.classList.add('funnel-ready');
+    });
+  }
+  // Reset stagger items
+  slide.querySelectorAll('.s-item.s-go').forEach(el => {
+    el.classList.remove('s-go');
+    el.style.animationDelay = '';
+    el.classList.add('s-item');
+    el.style.opacity = '0';
+  });
+}
+
+function animateSlide(slide, idx) {
+  // Stagger items
+  const items = slide.querySelectorAll('.s-item');
+  items.forEach((el, i) => {
+    el.style.opacity = '0';
+    el.classList.remove('s-go');
+    void el.offsetHeight;
+    el.style.animationDelay = `${i * 75}ms`;
+    el.classList.add('s-go');
+  });
+
+  // Funnel
+  if (idx === 3) animateFunnel();
+
+  // Charts
+  if (idx === 1 && roiChart)   { roiChart.reset();  roiChart.update(); }
+  if (idx === 4 && lcChart)    { lcChart.reset();   lcChart.update(); }
+  if (idx === 5 && leChart)    { leChart.reset();   leChart.update(); }
+  if (idx === 6 && taxChart)   { taxChart.reset();  taxChart.update(); }
+  if (idx === 6 && aaChart)    { aaChart.reset();   aaChart.update(); }
+}
+
+// ── FUNNEL ───────────────────────────────────────────────────────────────────
+function animateFunnel() {
+  const bars = document.querySelectorAll('#s4 .fs');
+  bars.forEach((bar, i) => {
+    const target = bar.dataset.w;
+    bar.classList.remove('funnel-ready');
+    setTimeout(() => {
+      bar.style.transition = 'width .85s cubic-bezier(.4,0,.2,1), opacity .4s ease';
+      bar.style.width = target;
+    }, i * 160 + 300);
+  });
+}
+
+// ── COUNT-UP ─────────────────────────────────────────────────────────────────
+function countUp(el) {
+  const target = parseFloat(el.dataset.count);
+  const fmt    = el.dataset.fmt || 'n';
+  const dur    = 1200;
+  const start  = performance.now();
+
+  function format(val) {
+    if (fmt === 'n') return Math.round(val).toLocaleString('pt-BR');
+    if (fmt === 'R$ {n}k') {
+      const v = val.toFixed(val < 10 ? 1 : 0);
+      return `R$ ${v.replace('.',',')}k`;
+    }
+    return Math.round(val).toString();
+  }
+
+  function tick(now) {
+    const p = Math.min((now - start) / dur, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    el.textContent = format(ease * target);
+    if (p < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+// ── COVER ENTRANCE ───────────────────────────────────────────────────────────
+function coverEntrance() {
+  const kpisEl = document.getElementById('cover-kpis');
+  // KPI grid appears after divider
+  setTimeout(() => {
+    kpisEl.style.transition = 'opacity .5s ease';
+    kpisEl.style.opacity = '1';
+    // Count up each KPI
+    setTimeout(() => {
+      kpisEl.querySelectorAll('[data-count]').forEach((el, i) => {
+        setTimeout(() => countUp(el), i * 120);
+      });
+    }, 200);
+  }, 1150);
+}
+
+// ── SWIPE ────────────────────────────────────────────────────────────────────
+let touchX = 0;
+document.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, {passive:true});
+document.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - touchX;
+  if (Math.abs(dx) > 50) go(dx < 0 ? cur+1 : cur-1);
+}, {passive:true});
+
+// ── KEYBOARD ─────────────────────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' ') { e.preventDefault(); go(cur+1); }
+  if (e.key==='ArrowLeft'||e.key==='ArrowUp') { e.preventDefault(); go(cur-1); }
+});
+
+// ── DOTS ─────────────────────────────────────────────────────────────────────
+const dr = document.getElementById('dotrow');
+for (let i = 0; i < TOTAL; i++) {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i===0?' active':'');
+  d.onclick = () => go(i);
+  const label = document.createElement('div');
+  label.className = 'dot-label';
+  label.textContent = SLIDE_TITLES[i];
+  d.appendChild(label);
+  dr.appendChild(d);
+}
+document.getElementById('progress').style.width = (1/TOTAL*100) + '%';
+
+// ── INIT ─────────────────────────────────────────────────────────────────────
+// Slide 1 is active on load — no stagger needed (cover handles its own entrance)
+coverEntrance();
+
+// Slides 2–8: reset stagger items so they're invisible until navigated to
+document.querySelectorAll('.slide:not(#s1) .s-item').forEach(el => {
+  el.style.opacity = '0';
+});
+// Funnel bars start at 0
+document.querySelectorAll('#s4 .fs').forEach(f => { f.style.width = '0%'; });
+
+// ── CHARTS ───────────────────────────────────────────────────────────────────
+Chart.defaults.color = '#64748b';
+Chart.defaults.borderColor = '#2d3748';
+Chart.defaults.font.family = "'Segoe UI', system-ui, sans-serif";
+Chart.defaults.plugins.legend.labels.usePointStyle = true;
+Chart.defaults.plugins.legend.labels.padding = 12;
+const gO = { y:{grid:{color:'#1e2535'}}, x:{grid:{display:false}} };
+const lo = (c,ca) => ({borderColor:c,backgroundColor:ca,fill:true,tension:.4,pointBackgroundColor:c,pointRadius:4,pointHoverRadius:6});
+
+const roiChart = new Chart(document.getElementById('c-roi'), {
+  type: 'bar',
+  data: {
+    labels: ['Legal Control','Legal Ética','Vigna Tax','Vigna A.A'],
+    datasets: [
+      {label:'Investimento',data:[20992.93,12782.60,5497.94,3436.23],backgroundColor:'rgba(99,102,241,.5)',borderRadius:6},
+      {label:'LTV Projetado',data:[86400,54000,0,0],backgroundColor:'rgba(16,185,129,.7)',borderRadius:6},
+    ]
+  },
+  options:{plugins:{legend:{position:'bottom'}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>'R$'+(v/1000).toFixed(0)+'k'}}},responsive:true,maintainAspectRatio:false}
+});
+
+const lcChart = new Chart(document.getElementById('c-lc-cpl'), {
+  type: 'line',
+  data: {
+    labels: ['Jul/25','Ago/25','Set/25','Out/25','Nov/25','Dez/25','Jan/26','Fev/26'],
+    datasets: [{
+      label:'Custo por Lead (R$)',
+      ...lo('rgba(99,102,241,1)','rgba(99,102,241,.12)'),
+      data:[501.36,65.85,95.19,29.40,10.71,68.63,49.35,51.55]
+    }]
+  },
+  options:{plugins:{legend:{display:false}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>'R$'+v}}},responsive:true,maintainAspectRatio:false}
+});
+
+const leChart = new Chart(document.getElementById('c-le'), {
+  type: 'bar',
+  data: {
+    labels: ['Jul/25','Ago/25','Set/25','Out/25','Nov/25','Dez/25','Jan/26','Fev/26'],
+    datasets: [
+      {label:'Leads',data:[73,666,99,41,115,62,68,106],backgroundColor:'rgba(16,185,129,.35)',borderRadius:4,yAxisID:'y'},
+      {label:'Contratos',data:[2,1,1,3,0,1,0,1],backgroundColor:'rgba(251,146,60,.85)',borderRadius:4,yAxisID:'y1'},
+    ]
+  },
+  options:{
+    plugins:{legend:{position:'bottom'}},
+    scales:{...gO,y:{...gO.y,position:'left'},y1:{grid:{display:false},position:'right',ticks:{stepSize:1}}},
+    responsive:true,maintainAspectRatio:false
+  }
+});
+
+const TAX = [
+  {mes:'Jan/25',social:32,search:103},{mes:'Fev/25',social:17,search:78},
+  {mes:'Mar/25',social:213,search:132},{mes:'Abr/25',social:275,search:146},
+  {mes:'Mai/25',social:33,search:149},{mes:'Jun/25',social:31,search:178},
+  {mes:'Jul/25',social:40,search:139},{mes:'Ago/25',social:24,search:196},
+  {mes:'Set/25',social:29,search:263},{mes:'Out/25',social:33,search:367},
+  {mes:'Nov/25',social:14,search:464},{mes:'Dez/25',social:15,search:1010},
+  {mes:'Jan/26',social:0,search:0},
+];
+const taxChart = new Chart(document.getElementById('c-tax'), {
+  type: 'line',
+  data: {
+    labels: TAX.map(d=>d.mes),
+    datasets: [
+      {label:'Search Orgânico',...lo('rgba(59,130,246,1)','rgba(59,130,246,.12)'),data:TAX.map(d=>d.search)},
+      {label:'Social Orgânico',...lo('rgba(99,102,241,1)','rgba(99,102,241,.05)'),data:TAX.map(d=>d.social)},
+    ]
+  },
+  options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true,maintainAspectRatio:false}
+});
+
+const AA = [
+  {mes:'Jan/25',search:2181},{mes:'Fev/25',search:2162},{mes:'Mar/25',search:2256},
+  {mes:'Abr/25',search:2149},{mes:'Mai/25',search:2042},{mes:'Jun/25',search:2188},
+  {mes:'Jul/25',search:2080},{mes:'Ago/25',search:1969},{mes:'Set/25',search:1796},
+  {mes:'Out/25',search:1836},
+];
+const aaChart = new Chart(document.getElementById('c-aa'), {
+  type: 'line',
+  data: {
+    labels: AA.map(d=>d.mes),
+    datasets: [{label:'Sessões de Search',...lo('rgba(245,158,11,1)','rgba(245,158,11,.12)'),data:AA.map(d=>d.search)}]
+  },
+  options:{plugins:{legend:{display:false}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>v.toLocaleString('pt-BR')}}},responsive:true,maintainAspectRatio:false}
+});
+</script>
+</body>
+</html>
