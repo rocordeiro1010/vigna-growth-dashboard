@@ -13,6 +13,7 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0f111
 /* SLIDES */
 .slides{position:relative;width:100vw;height:100vh;overflow:hidden;}
 .slide{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;opacity:0;pointer-events:none;}
+.slide.active{opacity:1;pointer-events:all;}
 
 /* PROGRESS */
 #progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#6366f1,#8b5cf6);transition:width .4s ease;z-index:200;}
