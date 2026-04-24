@@ -159,11 +159,11 @@ footer { text-align: center; padding: 24px; color: #334155; font-size: 12px; bor
 
 <nav class="tab-nav">
   <button class="tab-btn active" onclick="switchTab('geral')" style="--accent:#6366f1"><span class="tab-dot" style="background:#6366f1"></span> Visão Geral</button>
-  <button class="tab-btn" onclick="switchTab('lc')" style="--accent:#6366f1"><span class="tab-dot" style="background:#6366f1"></span> Legal Control</button>
-  <button class="tab-btn" onclick="switchTab('le')" style="--accent:#10b981"><span class="tab-dot" style="background:#10b981"></span> Legal Ética</button>
-  <button class="tab-btn" onclick="switchTab('tax')" style="--accent:#3b82f6"><span class="tab-dot" style="background:#3b82f6"></span> Vigna Tax</button>
-  <button class="tab-btn" onclick="switchTab('aa')" style="--accent:#f59e0b"><span class="tab-dot" style="background:#f59e0b"></span> Vigna A.A</button>
-  <button class="tab-btn" onclick="switchTab('cc')" style="--accent:#64748b"><span class="tab-dot" style="background:#64748b"></span> Compliance Control</button>
+  <button class="tab-btn" onclick="switchTab('lc')" style="--accent:#f97316"><span class="tab-dot" style="background:#f97316"></span> Legal Control</button>
+  <button class="tab-btn" onclick="switchTab('le')" style="--accent:#ef4444"><span class="tab-dot" style="background:#ef4444"></span> Legal Ética</button>
+  <button class="tab-btn" onclick="switchTab('tax')" style="--accent:#eab308"><span class="tab-dot" style="background:#eab308"></span> Vigna Tax</button>
+  <button class="tab-btn" onclick="switchTab('aa')" style="--accent:#1d4ed8"><span class="tab-dot" style="background:#1d4ed8"></span> Vigna A.A</button>
+  <button class="tab-btn" onclick="switchTab('cc')" style="--accent:#0ea5e9"><span class="tab-dot" style="background:#0ea5e9"></span> Compliance Control</button>
   <button class="tab-btn" onclick="switchTab('lh')" style="--accent:#64748b"><span class="tab-dot" style="background:#64748b"></span> Legal Hub</button>
 </nav>
 
@@ -440,10 +440,10 @@ new Chart(document.getElementById('g-invMensal'),{
   data:{
     labels:['Jun/25','Jul/25','Aug/25','Sep/25','Oct/25','Nov/25','Dec/25','Jan/26','Feb/26','Mar/26'],
     datasets:[
-      {label:'Legal Control',data:[0,3008.14,3489.94,2570.17,1235,471.24,2401.99,1875.16,2577.73,3383.56],backgroundColor:'rgba(99,102,241,.7)',borderRadius:4},
-      {label:'Legal Ética',  data:[0,1743.74,3072.58,800.17,318,2321.67,1979.78,870.26,1676.4,0],          backgroundColor:'rgba(16,185,129,.7)',borderRadius:4},
-      {label:'Vigna Tax',    data:[0,0,1726.81,1470.11,519.59,658.96,1122.47,0,0,0],                      backgroundColor:'rgba(59,130,246,.7)',borderRadius:4},
-      {label:'Vigna A.A',    data:[0,1728,1708.23,0,0,0,0,0,0,0],                                          backgroundColor:'rgba(245,158,11,.7)',borderRadius:4},
+      {label:'Legal Control',data:[0,3008.14,3489.94,2570.17,1235,471.24,2401.99,1875.16,2577.73,3383.56],backgroundColor:'rgba(249,115,22,.7)',borderRadius:4},
+      {label:'Legal Ética',  data:[0,1743.74,3072.58,800.17,318,2321.67,1979.78,870.26,1676.4,0],          backgroundColor:'rgba(239,68,68,.7)',borderRadius:4},
+      {label:'Vigna Tax',    data:[0,0,1726.81,1470.11,519.59,658.96,1122.47,0,0,0],                      backgroundColor:'rgba(234,179,8,.7)',borderRadius:4},
+      {label:'Vigna A.A',    data:[0,1728,1708.23,0,0,0,0,0,0,0],                                          backgroundColor:'rgba(29,78,216,.7)',borderRadius:4},
     ]
   },
   options:{plugins:{legend:{position:'bottom'}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>'R$'+(v/1000).toFixed(0)+'k'}}},responsive:true}
@@ -453,7 +453,7 @@ new Chart(document.getElementById('g-pizza'),{
   type:'doughnut',
   data:{
     labels:['Legal Control','Legal Ética','Vigna Tax','Vigna A.A'],
-    datasets:[{data:[21012.93,12782.6,5497.94,3436.23],backgroundColor:['rgba(99,102,241,.85)','rgba(16,185,129,.85)','rgba(59,130,246,.85)','rgba(245,158,11,.85)'],borderColor:'rgba(255,255,255,0.05)',borderWidth:2}]
+    datasets:[{data:[21012.93,12782.6,5497.94,3436.23],backgroundColor:['rgba(249,115,22,.85)','rgba(239,68,68,.85)','rgba(234,179,8,.85)','rgba(29,78,216,.85)'],borderColor:'rgba(255,255,255,0.05)',borderWidth:2}]
   },
   options:{cutout:'65%',plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:ctx=>' R$ '+Math.round(ctx.parsed).toLocaleString('pt-BR')}}}}
 });
@@ -461,8 +461,8 @@ new Chart(document.getElementById('g-pizza'),{
 new Chart(document.getElementById('g-contratos'),{
   type:'bar',
   data:{labels:MESES,datasets:[
-    {label:'Legal Control',data:LC.map(d=>d.contratos),backgroundColor:'rgba(99,102,241,.8)',borderRadius:4},
-    {label:'Legal Ética',  data:LE.map(d=>d.contratos),backgroundColor:'rgba(16,185,129,.8)',borderRadius:4},
+    {label:'Legal Control',data:LC.map(d=>d.contratos),backgroundColor:'rgba(249,115,22,.8)',borderRadius:4},
+    {label:'Legal Ética',  data:LE.map(d=>d.contratos),backgroundColor:'rgba(239,68,68,.8)',borderRadius:4},
   ]},
   options:{plugins:{legend:{position:'bottom'}},scales:{...gO,y:{...gO.y,ticks:{stepSize:1}}},responsive:true}
 });
@@ -470,7 +470,7 @@ new Chart(document.getElementById('g-contratos'),{
 new Chart(document.getElementById('g-leads-contratos'),{
   type:'bar',
   data:{labels:MESES,datasets:[
-    {label:'Total Leads (LC+LE)',data:MESES.map((_,i)=>LC[i].leads+LE[i].leads),backgroundColor:'rgba(99,102,241,.2)',borderRadius:4},
+    {label:'Total Leads (LC+LE)',data:MESES.map((_,i)=>LC[i].leads+LE[i].leads),backgroundColor:'rgba(249,115,22,.2)',borderRadius:4},
     {label:'Total Contratos',    data:MESES.map((_,i)=>LC[i].contratos+LE[i].contratos),backgroundColor:'rgba(251,146,60,.9)',borderRadius:4},
   ]},
   options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}
@@ -478,10 +478,10 @@ new Chart(document.getElementById('g-leads-contratos'),{
 
 const geralBody = document.getElementById('g-resumo-body');
 const resumo=[
-  {nome:'Legal Control',inv:21012.93,cont:5,ltv:108000,cor:'#6366f1'},
-  {nome:'Legal Ética',  inv:12782.6, cont:9,ltv:54000, cor:'#10b981'},
-  {nome:'Vigna Tax',    inv:5497.94, cont:1,ltv:0,     cor:'#3b82f6'},
-  {nome:'Vigna A.A',    inv:3436.23, cont:0,ltv:0,     cor:'#f59e0b'},
+  {nome:'Legal Control',inv:21012.93,cont:5,ltv:108000,cor:'#f97316'},
+  {nome:'Legal Ética',  inv:12782.6, cont:9,ltv:54000, cor:'#ef4444'},
+  {nome:'Vigna Tax',    inv:5497.94, cont:1,ltv:0,     cor:'#eab308'},
+  {nome:'Vigna A.A',    inv:3436.23, cont:0,ltv:0,     cor:'#1d4ed8'},
   {nome:'Compliance',   inv:0,       cont:0,ltv:0,     cor:'#64748b'},
   {nome:'Legal Hub',    inv:0,       cont:0,ltv:0,     cor:'#64748b'},
 ];
@@ -494,10 +494,10 @@ resumo.forEach(r=>{
 geralBody.innerHTML+=`<tr class="total-row"><td>TOTAL</td><td class="num">${fmtR(totalInv)}</td><td class="num">100%</td><td class="num positive">15</td><td class="num positive">${fmtR(162000)}</td><td class="num positive">279%</td><td></td></tr>`;
 
 // ── LEGAL CONTROL ──
-new Chart(document.getElementById('lc-funil'),{type:'bar',data:{labels:MESES,datasets:[{label:'Leads',data:LC.map(d=>d.leads),backgroundColor:'rgba(99,102,241,.35)',borderRadius:4},{label:'MQL',data:LC.map(d=>d.mql),backgroundColor:'rgba(99,102,241,.65)',borderRadius:4},{label:'SQL',data:LC.map(d=>d.sql),backgroundColor:'rgba(139,92,246,.85)',borderRadius:4},{label:'Contratos',data:LC.map(d=>d.contratos),backgroundColor:'rgba(251,146,60,1)',borderRadius:4}]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
-new Chart(document.getElementById('lc-inv-lucro'),{type:'bar',data:{labels:MESES,datasets:[{label:'Investimento',data:LC.map(d=>d.investimento),backgroundColor:'rgba(99,102,241,.5)',borderRadius:4},{label:'LTV Projetado',data:LC.map(d=>d.lucro),backgroundColor:'rgba(16,185,129,.7)',borderRadius:4}]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>'R$'+(v/1000).toFixed(0)+'k'}}},responsive:true}});
-new Chart(document.getElementById('lc-custo-lead'),{type:'line',data:{labels:MESES,datasets:[{label:'R$/Lead',...lineOpts('rgba(99,102,241,1)','rgba(99,102,241,.1)'),data:LC.map(d=>d.custo_lead)}]},options:{plugins:{legend:{display:false}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>'R$'+v}}},responsive:true}});
-new Chart(document.getElementById('lc-custo-sql'),{type:'line',data:{labels:MESES,datasets:[{label:'R$/SQL',...lineOpts('rgba(139,92,246,1)','rgba(139,92,246,.1)'),data:LC.map(d=>d.custo_sql)}]},options:{plugins:{legend:{display:false}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>'R$'+v}}},responsive:true}});
+new Chart(document.getElementById('lc-funil'),{type:'bar',data:{labels:MESES,datasets:[{label:'Leads',data:LC.map(d=>d.leads),backgroundColor:'rgba(249,115,22,.3)',borderRadius:4},{label:'MQL',data:LC.map(d=>d.mql),backgroundColor:'rgba(249,115,22,.6)',borderRadius:4},{label:'SQL',data:LC.map(d=>d.sql),backgroundColor:'rgba(249,115,22,.9)',borderRadius:4},{label:'Contratos',data:LC.map(d=>d.contratos),backgroundColor:'rgba(249,115,22,1)',borderRadius:4}]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
+new Chart(document.getElementById('lc-inv-lucro'),{type:'bar',data:{labels:MESES,datasets:[{label:'Investimento',data:LC.map(d=>d.investimento),backgroundColor:'rgba(249,115,22,.5)',borderRadius:4},{label:'LTV Projetado',data:LC.map(d=>d.lucro),backgroundColor:'rgba(249,115,22,.9)',borderRadius:4}]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>'R$'+(v/1000).toFixed(0)+'k'}}},responsive:true}});
+new Chart(document.getElementById('lc-custo-lead'),{type:'line',data:{labels:MESES,datasets:[{label:'R$/Lead',...lineOpts('rgba(249,115,22,1)','rgba(249,115,22,.1)'),data:LC.map(d=>d.custo_lead)}]},options:{plugins:{legend:{display:false}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>'R$'+v}}},responsive:true}});
+new Chart(document.getElementById('lc-custo-sql'),{type:'line',data:{labels:MESES,datasets:[{label:'R$/SQL',...lineOpts('rgba(249,115,22,1)','rgba(249,115,22,.15)'),data:LC.map(d=>d.custo_sql)}]},options:{plugins:{legend:{display:false}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>'R$'+v}}},responsive:true}});
 new Chart(document.getElementById('lc-conv'),{type:'bar',data:{labels:MESES,datasets:[{label:'Lead→Contrato %',data:LC.map(d=>d.leads>0?((d.contratos/d.leads)*100).toFixed(1):0),backgroundColor:'rgba(251,146,60,.7)',borderRadius:4}]},options:{plugins:{legend:{display:false}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>v+'%'}}},responsive:true}});
 
 const lcBody=document.getElementById('lc-table-body');
@@ -506,10 +506,10 @@ LC.forEach(d=>{s.inv+=d.investimento;s.leads+=d.leads;s.mql+=d.mql;s.sql+=d.sql;
 lcBody.innerHTML+=`<tr class="total-row"><td>TOTAL</td><td class="num">${fmtR(s.inv)}</td><td class="num">${s.leads}</td><td class="num">${s.mql}</td><td class="num">${s.sql}</td><td class="num positive">${s.cont}</td><td class="num">—</td><td class="num">—</td><td class="num positive">${fmtR(s.lucro)}</td></tr>`;
 
 // ── LEGAL ÉTICA ──
-new Chart(document.getElementById('le-funil'),{type:'bar',data:{labels:MESES,datasets:[{label:'Leads',data:LE.map(d=>d.leads),backgroundColor:'rgba(16,185,129,.3)',borderRadius:4},{label:'MQL',data:LE.map(d=>d.mql),backgroundColor:'rgba(16,185,129,.6)',borderRadius:4},{label:'SQL',data:LE.map(d=>d.sql),backgroundColor:'rgba(52,211,153,.85)',borderRadius:4},{label:'Contratos',data:LE.map(d=>d.contratos),backgroundColor:'rgba(251,146,60,1)',borderRadius:4}]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
-new Chart(document.getElementById('le-inv-lucro'),{type:'bar',data:{labels:MESES,datasets:[{label:'Investimento',data:LE.map(d=>d.investimento),backgroundColor:'rgba(16,185,129,.4)',borderRadius:4},{label:'LTV Projetado',data:LE.map(d=>d.lucro),backgroundColor:'rgba(16,185,129,.8)',borderRadius:4}]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>'R$'+(v/1000).toFixed(0)+'k'}}},responsive:true}});
-new Chart(document.getElementById('le-custo-lead'),{type:'line',data:{labels:MESES,datasets:[{label:'R$/Lead',...lineOpts('rgba(16,185,129,1)','rgba(16,185,129,.1)'),data:LE.map(d=>d.custo_lead)}]},options:{plugins:{legend:{display:false}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>'R$'+v}}},responsive:true}});
-new Chart(document.getElementById('le-contratos'),{type:'bar',data:{labels:MESES,datasets:[{label:'Contratos',data:LE.map(d=>d.contratos),backgroundColor:'rgba(52,211,153,.8)',borderRadius:4}]},options:{plugins:{legend:{display:false}},scales:{...gO,y:{...gO.y,ticks:{stepSize:1}}},responsive:true}});
+new Chart(document.getElementById('le-funil'),{type:'bar',data:{labels:MESES,datasets:[{label:'Leads',data:LE.map(d=>d.leads),backgroundColor:'rgba(239,68,68,.25)',borderRadius:4},{label:'MQL',data:LE.map(d=>d.mql),backgroundColor:'rgba(239,68,68,.55)',borderRadius:4},{label:'SQL',data:LE.map(d=>d.sql),backgroundColor:'rgba(239,68,68,.85)',borderRadius:4},{label:'Contratos',data:LE.map(d=>d.contratos),backgroundColor:'rgba(239,68,68,1)',borderRadius:4}]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
+new Chart(document.getElementById('le-inv-lucro'),{type:'bar',data:{labels:MESES,datasets:[{label:'Investimento',data:LE.map(d=>d.investimento),backgroundColor:'rgba(239,68,68,.4)',borderRadius:4},{label:'LTV Projetado',data:LE.map(d=>d.lucro),backgroundColor:'rgba(239,68,68,.85)',borderRadius:4}]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>'R$'+(v/1000).toFixed(0)+'k'}}},responsive:true}});
+new Chart(document.getElementById('le-custo-lead'),{type:'line',data:{labels:MESES,datasets:[{label:'R$/Lead',...lineOpts('rgba(239,68,68,1)','rgba(239,68,68,.1)'),data:LE.map(d=>d.custo_lead)}]},options:{plugins:{legend:{display:false}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>'R$'+v}}},responsive:true}});
+new Chart(document.getElementById('le-contratos'),{type:'bar',data:{labels:MESES,datasets:[{label:'Contratos',data:LE.map(d=>d.contratos),backgroundColor:'rgba(239,68,68,.8)',borderRadius:4}]},options:{plugins:{legend:{display:false}},scales:{...gO,y:{...gO.y,ticks:{stepSize:1}}},responsive:true}});
 
 const leBody=document.getElementById('le-table-body');
 let sl={inv:0,leads:0,mql:0,sql:0,cont:0,lucro:0};
@@ -517,15 +517,15 @@ LE.forEach(d=>{sl.inv+=d.investimento;sl.leads+=d.leads;sl.mql+=d.mql;sl.sql+=d.
 leBody.innerHTML+=`<tr class="total-row"><td>TOTAL</td><td class="num">${fmtR(sl.inv)}</td><td class="num">${sl.leads}</td><td class="num">${sl.mql}</td><td class="num">${sl.sql}</td><td class="num positive">${sl.cont}</td><td class="num">—</td><td class="num positive">${fmtR(sl.lucro)}</td></tr>`;
 
 // ── VIGNA TAX ──
-new Chart(document.getElementById('tax-organic'),{type:'line',data:{labels:TAX.map(d=>d.mes),datasets:[{label:'Organic Social',...lineOpts('rgba(59,130,246,1)','rgba(59,130,246,.1)'),data:TAX.map(d=>d.social)},{label:'Organic Search',...lineOpts('rgba(99,102,241,1)','rgba(99,102,241,.1)'),data:TAX.map(d=>d.search)}]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
+new Chart(document.getElementById('tax-organic'),{type:'line',data:{labels:TAX.map(d=>d.mes),datasets:[{label:'Organic Social',...lineOpts('rgba(234,179,8,1)','rgba(234,179,8,.1)'),data:TAX.map(d=>d.social)},{label:'Organic Search',...lineOpts('rgba(234,179,8,.7)','rgba(234,179,8,.05)'),data:TAX.map(d=>d.search)}]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
 const taxCL=TAX.filter(d=>d.leads_pagos+d.leads_org>0);
-new Chart(document.getElementById('tax-funil'),{type:'bar',data:{labels:taxCL.map(d=>d.mes),datasets:[{label:'Leads Pagos',data:taxCL.map(d=>d.leads_pagos),backgroundColor:'rgba(59,130,246,.5)',borderRadius:4},{label:'Leads Org.',data:taxCL.map(d=>d.leads_org),backgroundColor:'rgba(99,102,241,.5)',borderRadius:4},{label:'MQL',data:taxCL.map(d=>d.mql),backgroundColor:'rgba(59,130,246,.9)',borderRadius:4},{label:'Contratos',data:taxCL.map(d=>d.contratos),backgroundColor:'rgba(251,146,60,1)',borderRadius:4}]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
+new Chart(document.getElementById('tax-funil'),{type:'bar',data:{labels:taxCL.map(d=>d.mes),datasets:[{label:'Leads Pagos',data:taxCL.map(d=>d.leads_pagos),backgroundColor:'rgba(234,179,8,.45)',borderRadius:4},{label:'Leads Org.',data:taxCL.map(d=>d.leads_org),backgroundColor:'rgba(234,179,8,.65)',borderRadius:4},{label:'MQL',data:taxCL.map(d=>d.mql),backgroundColor:'rgba(234,179,8,.9)',borderRadius:4},{label:'Contratos',data:taxCL.map(d=>d.contratos),backgroundColor:'rgba(234,179,8,1)',borderRadius:4}]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
 const taxBody=document.getElementById('tax-table-body');
 TAX.forEach(d=>{taxBody.innerHTML+=`<tr><td>${d.mes}</td><td class="num">${fmtR(d.investimento)}</td><td class="num">${n(d.leads_pagos)}</td><td class="num">${n(d.leads_org)}</td><td class="num">${n(d.mql)}</td><td class="num">${n(d.sql)}</td><td class="num">${d.contratos?'<span class="positive">'+d.contratos+'</span>':'—'}</td><td class="num">${n(d.social)}</td><td class="num">${n(d.search)}</td></tr>`;});
 
 // ── VIGNA A.A ──
-new Chart(document.getElementById('aa-organic'),{type:'line',data:{labels:AA.map(d=>d.mes),datasets:[{label:'Organic Social',...lineOpts('rgba(245,158,11,1)','rgba(245,158,11,.1)'),data:AA.map(d=>d.social)},{label:'Organic Search',...lineOpts('rgba(251,191,36,1)','rgba(251,191,36,.05)'),data:AA.map(d=>d.search)}]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
-new Chart(document.getElementById('aa-receita'),{type:'bar',data:{labels:AA.map(d=>d.mes),datasets:[{label:'Receita Ads (R$)',data:AA.map(d=>d.receita_ads),backgroundColor:'rgba(245,158,11,.7)',borderRadius:6}]},options:{plugins:{legend:{display:false}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>'R$'+(v/1000).toFixed(1)+'k'}}},responsive:true}});
+new Chart(document.getElementById('aa-organic'),{type:'line',data:{labels:AA.map(d=>d.mes),datasets:[{label:'Organic Social',...lineOpts('rgba(29,78,216,1)','rgba(29,78,216,.1)'),data:AA.map(d=>d.social)},{label:'Organic Search',...lineOpts('rgba(29,78,216,.65)','rgba(29,78,216,.05)'),data:AA.map(d=>d.search)}]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
+new Chart(document.getElementById('aa-receita'),{type:'bar',data:{labels:AA.map(d=>d.mes),datasets:[{label:'Receita Ads (R$)',data:AA.map(d=>d.receita_ads),backgroundColor:'rgba(29,78,216,.7)',borderRadius:6}]},options:{plugins:{legend:{display:false}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>'R$'+(v/1000).toFixed(1)+'k'}}},responsive:true}});
 const aaBody=document.getElementById('aa-table-body');
 AA.forEach(d=>{aaBody.innerHTML+=`<tr><td>${d.mes}</td><td class="num">${n(d.social)}</td><td class="num">${n(d.search)}</td><td class="num">${d.receita_ads>0?'<span class="positive">'+fmtR(d.receita_ads)+'</span>':'—'}</td></tr>`;});
 </script>
