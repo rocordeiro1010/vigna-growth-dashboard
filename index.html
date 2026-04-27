@@ -8,168 +8,157 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html { height: 100%; width: 100%; }
-body {
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  background: #0f1117;
-  color: #e2e8f0;
-  height: 100%;
-  width: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-header {
-  background: #13161f;
-  border-bottom: 1px solid #2d3748;
-  padding: 22px 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #0f1117; color: #e2e8f0; overflow-x: hidden; }
+
+/* ── HEADER ── */
+header { background: #13161f; border-bottom: 1px solid #2d3748; padding: 22px 40px; display: flex; justify-content: space-between; align-items: center; }
 .brand { display: flex; align-items: center; gap: 14px; }
-.logo {
-  width: 44px; height: 44px;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 20px; font-weight: 900; color: white;
-}
+.logo { width: 44px; height: 44px; background: linear-gradient(135deg,#6366f1,#8b5cf6); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 900; color: #fff; }
 header h1 { font-size: 20px; font-weight: 700; color: #f1f5f9; }
 header p  { font-size: 12px; color: #64748b; margin-top: 2px; }
+.header-right { display: flex; align-items: center; gap: 16px; }
 .header-date { text-align: right; font-size: 12px; color: #64748b; }
 .header-date strong { display: block; font-size: 14px; color: #94a3b8; }
+#theme-btn { background: none; border: 1px solid #2d3748; border-radius: 50px; padding: 6px 14px; cursor: pointer; font-size: 13px; color: #94a3b8; transition: all .2s; white-space: nowrap; }
+#theme-btn:hover { border-color: #64748b; color: #f1f5f9; }
 
-.tab-nav {
-  background: #13161f;
-  border-bottom: 1px solid #2d3748;
-  padding: 0 40px;
-  display: flex; gap: 4px; overflow-x: auto;
-}
-.tab-btn {
-  padding: 14px 20px; font-size: 13px; font-weight: 600; color: #64748b;
-  background: none; border: none; border-bottom: 2px solid transparent;
-  cursor: pointer; white-space: nowrap; transition: all .2s;
-  display: flex; align-items: center; gap: 8px;
-}
+/* ── CONTROL BAR ── */
+.ctrl-bar { background: #13161f; border-bottom: 1px solid #2d3748; padding: 10px 40px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.period-section { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; overflow: hidden; }
+.ctrl-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #64748b; white-space: nowrap; }
+.chips-wrap { position: relative; flex: 1; min-width: 0; overflow: hidden; }
+.chips-wrap::after { content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 48px; background: linear-gradient(to right, transparent, #13161f); pointer-events: none; }
+.period-chips { display: flex; gap: 5px; overflow-x: auto; scrollbar-width: none; padding-right: 48px; }
+.period-chips::-webkit-scrollbar { display: none; }
+.period-chip { padding: 4px 14px; font-size: 12px; font-weight: 600; border: 1px solid #2d3748; border-radius: 20px; background: none; color: #64748b; cursor: pointer; transition: all .18s; white-space: nowrap; flex-shrink: 0; }
+.period-chip:hover { color: #cbd5e1; border-color: #475569; }
+.period-chip.active { background: #6366f1; border-color: #6366f1; color: #fff; }
+.period-chip.todos { font-weight: 700; }
+.gran-section { display: flex; align-items: center; gap: 2px; background: #0f1117; border-radius: 8px; padding: 3px; flex-shrink: 0; }
+.gran-btn { padding: 5px 14px; font-size: 12px; font-weight: 600; border: none; border-radius: 6px; background: none; color: #64748b; cursor: pointer; transition: all .18s; white-space: nowrap; }
+.gran-btn:hover { color: #cbd5e1; }
+.gran-btn.active { background: #1e2535; color: #f1f5f9; }
+
+/* ── CONTEXT BAR (filtro ativo) ── */
+.context-bar { background: rgba(99,102,241,.08); border-bottom: 1px solid rgba(99,102,241,.18); padding: 7px 40px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.context-bar .ctx-text { font-size: 12px; color: #818cf8; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.context-bar .ctx-text::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #6366f1; }
+.context-bar .ctx-clear { font-size: 11px; font-weight: 700; color: #64748b; background: none; border: 1px solid #374151; border-radius: 20px; padding: 3px 10px; cursor: pointer; transition: all .18s; }
+.context-bar .ctx-clear:hover { color: #f1f5f9; border-color: #64748b; }
+
+/* ── TABS ── */
+.tab-nav { background: #13161f; border-bottom: 1px solid #2d3748; padding: 0 40px; display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+.tab-nav::-webkit-scrollbar { display: none; }
+.tab-btn { padding: 14px 20px; font-size: 13px; font-weight: 600; color: #64748b; background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; white-space: nowrap; transition: all .2s; display: flex; align-items: center; gap: 8px; }
 .tab-btn:hover { color: #cbd5e1; }
-.tab-btn.active { color: #f1f5f9; border-bottom-color: var(--accent, #6366f1); }
-.tab-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent, #6366f1); }
+.tab-btn.active { color: #f1f5f9; border-bottom-color: var(--accent,#6366f1); }
+.tab-dot { width: 8px; height: 8px; border-radius: 50%; }
 
+/* ── PANELS ── */
 .tab-panel { display: none; }
 .tab-panel.active { display: block; }
 .container { max-width: 1400px; margin: 0 auto; padding: 32px 40px; }
+@keyframes tabFade { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+.tab-panel.active .container { animation: tabFade .3s ease forwards; }
 
+/* ── KPI CARDS ── */
 .kpis { display: grid; gap: 18px; margin-bottom: 28px; }
-.kpis-5 { grid-template-columns: repeat(5, 1fr); }
-.kpis-4 { grid-template-columns: repeat(4, 1fr); }
-.kpis-3 { grid-template-columns: repeat(3, 1fr); }
-.kpi {
-  background: #1a1f2e; border: 1px solid #2d3748;
-  border-radius: 14px; padding: 22px; position: relative; overflow: hidden;
-}
-.kpi::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.kpis-5 { grid-template-columns: repeat(5,1fr); }
+.kpis-4 { grid-template-columns: repeat(4,1fr); }
+.kpis-3 { grid-template-columns: repeat(3,1fr); }
+.kpi { background: #1a1f2e; border: 1px solid #2d3748; border-radius: 14px; padding: 22px; position: relative; overflow: visible; transition: transform .22s,box-shadow .22s,border-color .22s; cursor: default; }
+.kpi::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 14px 14px 0 0; }
 .kpi.purple::before { background: linear-gradient(90deg,#6366f1,#8b5cf6); }
 .kpi.green::before  { background: linear-gradient(90deg,#10b981,#34d399); }
 .kpi.blue::before   { background: linear-gradient(90deg,#3b82f6,#60a5fa); }
 .kpi.orange::before { background: linear-gradient(90deg,#f59e0b,#fbbf24); }
-.kpi-icon { font-size: 24px; margin-bottom: 10px; }
+.kpi.purple:hover { transform:translateY(-4px); box-shadow:0 12px 32px rgba(99,102,241,.22); border-color:rgba(99,102,241,.4); }
+.kpi.green:hover  { transform:translateY(-4px); box-shadow:0 12px 32px rgba(16,185,129,.22); border-color:rgba(16,185,129,.4); }
+.kpi.blue:hover   { transform:translateY(-4px); box-shadow:0 12px 32px rgba(59,130,246,.22); border-color:rgba(59,130,246,.4); }
+.kpi.orange:hover { transform:translateY(-4px); box-shadow:0 12px 32px rgba(245,158,11,.22); border-color:rgba(245,158,11,.4); }
+.kpi-icon  { font-size: 24px; margin-bottom: 10px; }
 .kpi-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: #64748b; }
-.kpi-value { font-size: 28px; font-weight: 800; color: #f1f5f9; margin: 5px 0; line-height: 1; }
+.kpi-value { font-size: 28px; font-weight: 800; color: #f1f5f9; margin: 5px 0 2px; line-height: 1; }
+.kpi-delta { font-size: 10px; min-height: 16px; margin-bottom: 4px; line-height: 16px; }
 .kpi-sub   { font-size: 11px; color: #475569; }
+@keyframes kpiIn { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+.kpi-in { animation: kpiIn .4s ease forwards; opacity: 0; }
 
-.section-title {
-  font-size: 11px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: .12em; color: #6366f1; margin-bottom: 14px;
-  display: flex; align-items: center; gap: 10px;
-}
+/* ── LAYOUT ── */
+.section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: #6366f1; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
 .section-title::after { content: ''; flex: 1; height: 1px; background: #2d3748; }
-
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 22px; }
 .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; margin-bottom: 22px; }
 .grid-1 { margin-bottom: 22px; }
-.grid-2 > *, .grid-3 > * { min-width: 0; }
-
-.card {
-  background: #1a1f2e; border: 1px solid #2d3748;
-  border-radius: 14px; padding: 22px; min-width: 0; overflow: hidden;
-}
-.card-title {
-  font-size: 13px; font-weight: 700; color: #cbd5e1;
-  margin-bottom: 18px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
-}
+.grid-2>*,.grid-3>* { min-width: 0; }
+.card { background: #1a1f2e; border: 1px solid #2d3748; border-radius: 14px; padding: 22px; min-width: 0; overflow: hidden; transition: border-color .22s,box-shadow .22s; }
+.card:hover { border-color: #3d4f6b; box-shadow: 0 4px 20px rgba(0,0,0,.2); }
+.card-title { font-size: 13px; font-weight: 700; color: #cbd5e1; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; text-transform: uppercase; letter-spacing: .05em; }
 .badge-purple { background: rgba(99,102,241,.2); color: #818cf8; }
 .badge-green  { background: rgba(16,185,129,.2); color: #34d399; }
 
+/* ── TABLES ── */
 .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
 .data-table th { padding: 8px 12px; text-align: left; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: #64748b; border-bottom: 1px solid #2d3748; }
 .data-table td { padding: 10px 12px; border-bottom: 1px solid #1e2535; color: #cbd5e1; }
 .data-table tr:last-child td { border-bottom: none; }
-.data-table tr:hover td { background: rgba(255,255,255,.02); }
+.data-table tbody tr:not(.total-row):hover td { background: rgba(99,102,241,.05) !important; }
 .num { text-align: right; font-variant-numeric: tabular-nums; }
 .positive { color: #34d399; font-weight: 600; }
-.total-row td { font-weight: 700; color: #f1f5f9; border-top: 1px solid #2d3748 !important; border-bottom: none !important; }
-
+.total-row td { font-weight: 700; color: #f1f5f9; border-top: 1px solid #2d3748 !important; border-bottom: none !important; background: rgba(255,255,255,.02); }
 .bar-wrap { background: #0f1117; border-radius: 4px; height: 5px; margin-top: 5px; }
-.bar-fill  { height: 5px; border-radius: 4px; }
+.bar-fill { height: 5px; border-radius: 4px; }
 
+/* ── EMPTY STATE ── */
 .empty-state { text-align: center; padding: 80px 40px; color: #475569; }
 .empty-state .icon { font-size: 48px; margin-bottom: 16px; }
 .empty-state h3 { font-size: 18px; font-weight: 700; color: #64748b; margin-bottom: 8px; }
-.empty-state p  { font-size: 14px; }
+.empty-state p { font-size: 14px; }
 
-@media (max-width: 900px) {
-  .kpis-5, .kpis-4, .kpis-3 { grid-template-columns: 1fr 1fr; }
-  .grid-2, .grid-3 { grid-template-columns: 1fr; }
-  .container { padding: 20px; }
-  .tab-nav { padding: 0 20px; }
-}
 footer { text-align: center; padding: 24px; color: #334155; font-size: 12px; border-top: 1px solid #1e2535; margin-top: 8px; }
 
-/* ── INTERACTIONS ── */
-.kpi{transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease;overflow:visible;cursor:default;}
-.kpi.purple:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(99,102,241,.22);border-color:rgba(99,102,241,.4);}
-.kpi.green:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(16,185,129,.22);border-color:rgba(16,185,129,.4);}
-.kpi.blue:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(59,130,246,.22);border-color:rgba(59,130,246,.4);}
-.kpi.orange:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(245,158,11,.22);border-color:rgba(245,158,11,.4);}
-.card{transition:border-color .22s ease,box-shadow .22s ease;}
-.card:hover{border-color:#3d4f6b;box-shadow:0 4px 20px rgba(0,0,0,.2);}
-.data-table tbody tr:not(.total-row):hover td{background:rgba(99,102,241,.06)!important;}
-@keyframes tabFade{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
-.tab-panel.active .container{animation:tabFade .35s ease forwards;}
-@keyframes kpiIn{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
-.kpi-in{animation:kpiIn .4s ease forwards;opacity:0;}
-
-/* ── THEME TOGGLE ── */
-#theme-btn{background:none;border:1px solid #2d3748;border-radius:50px;padding:6px 14px;cursor:pointer;font-size:13px;color:#94a3b8;display:flex;align-items:center;gap:6px;transition:all .2s;white-space:nowrap;}
-#theme-btn:hover{border-color:#64748b;color:#f1f5f9;}
+@media(max-width:900px){
+  .kpis-5,.kpis-4,.kpis-3 { grid-template-columns: 1fr 1fr; }
+  .grid-2,.grid-3 { grid-template-columns: 1fr; }
+  .container { padding: 20px; }
+  .tab-nav,.ctrl-bar,.context-bar { padding-left: 20px; padding-right: 20px; }
+  .ctrl-bar { flex-wrap: wrap; }
+  header { padding: 16px 20px; }
+}
 
 /* ── LIGHT MODE ── */
-body.light{background:#f1f5f9;color:#0f172a;}
-body.light header{background:#ffffff;border-color:#e2e8f0;}
-body.light header h1{color:#0f172a;}
-body.light header p{color:#64748b;}
-body.light .header-date{color:#64748b;}
-body.light .header-date strong{color:#374151;}
-body.light .tab-nav{background:#ffffff;border-color:#e2e8f0;}
-body.light .tab-btn{color:#64748b;}
-body.light .tab-btn:hover{color:#0f172a;}
-body.light .tab-btn.active{color:#0f172a;}
-body.light .kpi{background:#ffffff;border-color:#e2e8f0;}
-body.light .kpi-value{color:#0f172a;}
-body.light .kpi-label{color:#64748b;}
-body.light .kpi-sub{color:#94a3b8;}
-body.light .card{background:#ffffff;border-color:#e2e8f0;}
-body.light .card:hover{border-color:#cbd5e1;}
-body.light .card-title{color:#374151;}
-body.light .section-title::after{background:#e2e8f0;}
-body.light .data-table th{color:#64748b;border-color:#e2e8f0;}
-body.light .data-table td{color:#374151;border-color:#f1f5f9;}
-body.light .data-table .total-row td{color:#0f172a;background:rgba(99,102,241,.06);}
-body.light .bar-wrap{background:#e2e8f0;}
-body.light footer{color:#94a3b8;border-color:#e2e8f0;}
-body.light #theme-btn{border-color:#e2e8f0;color:#64748b;}
-body.light #theme-btn:hover{border-color:#94a3b8;color:#0f172a;}
+body.light { background: #f1f5f9; color: #0f172a; }
+body.light header, body.light .ctrl-bar, body.light .tab-nav { background: #fff; border-color: #e2e8f0; }
+body.light .chips-wrap::after { background: linear-gradient(to right, transparent, #fff); }
+body.light header h1 { color: #0f172a; }
+body.light header p, body.light .header-date { color: #64748b; }
+body.light .header-date strong { color: #374151; }
+body.light .ctrl-label { color: #94a3b8; }
+body.light .period-chip { border-color: #e2e8f0; color: #64748b; }
+body.light .period-chip:hover { border-color: #94a3b8; color: #0f172a; }
+body.light .gran-section { background: #f8fafc; }
+body.light .gran-btn { color: #64748b; }
+body.light .gran-btn.active { background: #e2e8f0; color: #0f172a; }
+body.light .context-bar { background: rgba(99,102,241,.06); border-color: rgba(99,102,241,.15); }
+body.light .tab-btn { color: #64748b; }
+body.light .tab-btn:hover { color: #0f172a; }
+body.light .tab-btn.active { color: #0f172a; }
+body.light .kpi { background: #fff; border-color: #e2e8f0; }
+body.light .kpi-value { color: #0f172a; }
+body.light .kpi-label { color: #64748b; }
+body.light .kpi-sub { color: #94a3b8; }
+body.light .card { background: #fff; border-color: #e2e8f0; }
+body.light .card:hover { border-color: #cbd5e1; }
+body.light .card-title { color: #374151; }
+body.light .section-title::after { background: #e2e8f0; }
+body.light .data-table th { color: #64748b; border-color: #e2e8f0; }
+body.light .data-table td { color: #374151; border-color: #f1f5f9; }
+body.light .total-row td { color: #0f172a; background: rgba(99,102,241,.04); }
+body.light .bar-wrap { background: #e2e8f0; }
+body.light footer { color: #94a3b8; border-color: #e2e8f0; }
+body.light #theme-btn { border-color: #e2e8f0; color: #64748b; }
+body.light #theme-btn:hover { border-color: #94a3b8; color: #0f172a; }
 </style>
 </head>
 <body>
@@ -177,72 +166,82 @@ body.light #theme-btn:hover{border-color:#94a3b8;color:#0f172a;}
 <header>
   <div class="brand">
     <div class="logo">V</div>
-    <div>
-      <h1>Growth Marketing Dashboard</h1>
-      <p>Grupo Vigna · Análise por Marca</p>
-    </div>
+    <div><h1>Growth Marketing Dashboard</h1><p>Grupo Vigna · Análise por Marca</p></div>
   </div>
-  <div style="display:flex;align-items:center;gap:16px;">
-    <div class="header-date">
-      <strong>Abril 2026</strong>
-      Período: Jun/25 – Mar/26
-    </div>
+  <div class="header-right">
+    <div class="header-date"><strong>Abril 2026</strong>Jun/25 – Mar/26</div>
     <button id="theme-btn" onclick="toggleTheme()">Dark</button>
   </div>
 </header>
 
+<div class="ctrl-bar">
+  <div class="period-section">
+    <span class="ctrl-label">Período</span>
+    <div class="chips-wrap">
+      <div class="period-chips" id="period-chips"></div>
+    </div>
+  </div>
+  <div class="gran-section">
+    <button class="gran-btn active" id="gb-mensal"     onclick="setGran('mensal')">Mensal</button>
+    <button class="gran-btn"        id="gb-trimestral" onclick="setGran('trimestral')">Trimestral</button>
+    <button class="gran-btn"        id="gb-anual"      onclick="setGran('anual')">Anual</button>
+  </div>
+</div>
+
+<div class="context-bar" id="ctx-bar" style="display:none">
+  <span class="ctx-text" id="ctx-text"></span>
+  <button class="ctx-clear" onclick="setPeriod('todos')">✕ Limpar filtro</button>
+</div>
+
 <nav class="tab-nav">
-  <button class="tab-btn active" onclick="switchTab('geral')" style="--accent:#6366f1"><span class="tab-dot" style="background:#6366f1"></span> Visão Geral</button>
-  <button class="tab-btn" onclick="switchTab('lc')" style="--accent:#f97316"><span class="tab-dot" style="background:#f97316"></span> Legal Control</button>
-  <button class="tab-btn" onclick="switchTab('le')" style="--accent:#ef4444"><span class="tab-dot" style="background:#ef4444"></span> Legal Ética</button>
-  <button class="tab-btn" onclick="switchTab('tax')" style="--accent:#eab308"><span class="tab-dot" style="background:#eab308"></span> Vigna Tax</button>
-  <button class="tab-btn" onclick="switchTab('aa')" style="--accent:#1d4ed8"><span class="tab-dot" style="background:#1d4ed8"></span> Vigna A.A</button>
-  <button class="tab-btn" onclick="switchTab('cc')" style="--accent:#0ea5e9"><span class="tab-dot" style="background:#0ea5e9"></span> Compliance Control</button>
-  <button class="tab-btn" onclick="switchTab('lh')" style="--accent:#64748b"><span class="tab-dot" style="background:#64748b"></span> Legal Hub</button>
+  <button class="tab-btn active" onclick="switchTab('geral')" style="--accent:#6366f1"><span class="tab-dot" style="background:#6366f1"></span>Visão Geral</button>
+  <button class="tab-btn" onclick="switchTab('lc')"  style="--accent:#f97316"><span class="tab-dot" style="background:#f97316"></span>Legal Control</button>
+  <button class="tab-btn" onclick="switchTab('le')"  style="--accent:#ef4444"><span class="tab-dot" style="background:#ef4444"></span>Legal Ética</button>
+  <button class="tab-btn" onclick="switchTab('tax')" style="--accent:#eab308"><span class="tab-dot" style="background:#eab308"></span>Vigna Tax</button>
+  <button class="tab-btn" onclick="switchTab('aa')"  style="--accent:#1d4ed8"><span class="tab-dot" style="background:#1d4ed8"></span>Vigna A.A</button>
+  <button class="tab-btn" onclick="switchTab('cc')"  style="--accent:#0ea5e9"><span class="tab-dot" style="background:#0ea5e9"></span>Compliance Control</button>
+  <button class="tab-btn" onclick="switchTab('lh')"  style="--accent:#64748b"><span class="tab-dot" style="background:#64748b"></span>Legal Hub</button>
 </nav>
 
 <!-- VISÃO GERAL -->
-<div class="tab-panel active" id="panel-geral">
-<div class="container">
+<div class="tab-panel active" id="panel-geral"><div class="container">
   <div class="kpis kpis-4">
-    <div class="kpi purple"><div class="kpi-icon">💰</div><div class="kpi-label">Total Investido</div><div class="kpi-value">R$ 42,7k</div><div class="kpi-sub">META + Google + LinkedIn</div></div>
-    <div class="kpi blue"><div class="kpi-icon">👥</div><div class="kpi-label">Total de Leads</div><div class="kpi-value">1.117</div><div class="kpi-sub">Pagos + Orgânicos</div></div>
-    <div class="kpi green"><div class="kpi-icon">📝</div><div class="kpi-label">Contratos Fechados</div><div class="kpi-value">15</div><div class="kpi-sub">Legal Control + Legal Ética + Tax</div></div>
-    <div class="kpi orange"><div class="kpi-icon">📈</div><div class="kpi-label">Receita Projetada LTV</div><div class="kpi-value">R$ 162k</div><div class="kpi-sub">Retorno estimado total</div></div>
+    <div class="kpi purple"><div class="kpi-icon">💰</div><div class="kpi-label">Total Investido</div><div class="kpi-value" id="g-kpi-inv">R$ 42,7k</div><div class="kpi-delta" id="g-kpi-inv-d"></div><div class="kpi-sub">META + Google + LinkedIn</div></div>
+    <div class="kpi blue"  ><div class="kpi-icon">👥</div><div class="kpi-label">Leads Gerados</div><div class="kpi-value" id="g-kpi-leads">1.117</div><div class="kpi-delta" id="g-kpi-leads-d"></div><div class="kpi-sub">Pagos + Orgânicos</div></div>
+    <div class="kpi green" ><div class="kpi-icon">📝</div><div class="kpi-label">Contratos Fechados</div><div class="kpi-value" id="g-kpi-cont">15</div><div class="kpi-delta" id="g-kpi-cont-d"></div><div class="kpi-sub">LC + LE + Tax</div></div>
+    <div class="kpi orange"><div class="kpi-icon">📈</div><div class="kpi-label">Receita LTV Projetada</div><div class="kpi-value" id="g-kpi-ltv">R$ 162k</div><div class="kpi-delta" id="g-kpi-ltv-d"></div><div class="kpi-sub">Retorno estimado total</div></div>
   </div>
   <div class="section-title">Investimento em Mídia Paga</div>
   <div class="grid-2">
-    <div class="card"><div class="card-title">Investimento Mensal por Empresa (R$)</div><canvas id="g-invMensal" height="230"></canvas></div>
-    <div class="card"><div class="card-title">Distribuição por Empresa</div><canvas id="g-pizza" height="230"></canvas></div>
+    <div class="card"><div class="card-title">Investimento por Empresa (R$)</div><canvas id="g-invMensal" height="230"></canvas></div>
+    <div class="card"><div class="card-title">Distribuição por Empresa <span id="pizza-subtitle" style="font-size:10px;color:#475569;font-weight:400">(histórico)</span></div><canvas id="g-pizza" height="230"></canvas></div>
   </div>
   <div class="section-title">Funil Consolidado</div>
   <div class="grid-2">
-    <div class="card"><div class="card-title">Contratos Fechados por Mês</div><canvas id="g-contratos" height="220"></canvas></div>
-    <div class="card"><div class="card-title">Leads Totais vs Contratos</div><canvas id="g-leads-contratos" height="220"></canvas></div>
+    <div class="card"><div class="card-title">Contratos Fechados por Período</div><canvas id="g-contratos" height="220"></canvas></div>
+    <div class="card"><div class="card-title">Leads vs Contratos (LC + LE)</div><canvas id="g-leads-contratos" height="220"></canvas></div>
   </div>
   <div class="section-title">Resumo por Empresa</div>
   <div class="card grid-1">
     <table class="data-table">
-      <thead><tr><th>Empresa</th><th class="num">Investimento</th><th class="num">% Total</th><th class="num">Contratos</th><th class="num">LTV Projetado</th><th class="num">ROI</th><th>Participação</th></tr></thead>
+      <thead><tr><th>Empresa</th><th class="num">Investimento</th><th class="num">% do Total</th><th class="num">Contratos</th><th class="num">LTV Projetado</th><th class="num">ROI</th><th>Participação</th></tr></thead>
       <tbody id="g-resumo-body"></tbody>
     </table>
   </div>
-</div>
-</div>
+</div></div>
 
 <!-- LEGAL CONTROL -->
-<div class="tab-panel" id="panel-lc">
-<div class="container">
+<div class="tab-panel" id="panel-lc"><div class="container">
   <div class="kpis kpis-5">
-    <div class="kpi purple"><div class="kpi-icon">💰</div><div class="kpi-label">Total Investido</div><div class="kpi-value">R$ 21k</div><div class="kpi-sub">Jun/25 – Mar/26</div></div>
-    <div class="kpi blue"><div class="kpi-icon">👥</div><div class="kpi-label">Total de Leads</div><div class="kpi-value">359</div><div class="kpi-sub">Pagos + Orgânicos</div></div>
-    <div class="kpi blue"><div class="kpi-icon">🎯</div><div class="kpi-label">Total de SQLs</div><div class="kpi-value">50</div><div class="kpi-sub">Leads qualificados p/ venda</div></div>
-    <div class="kpi green"><div class="kpi-icon">📝</div><div class="kpi-label">Contratos Fechados</div><div class="kpi-value">5</div><div class="kpi-sub">Ticket médio R$ 900</div></div>
-    <div class="kpi orange"><div class="kpi-icon">💵</div><div class="kpi-label">LTV Projetado</div><div class="kpi-value">R$ 108k</div><div class="kpi-sub">5 contratos × R$ 21.600</div></div>
+    <div class="kpi purple"><div class="kpi-icon">💰</div><div class="kpi-label">Investimento</div><div class="kpi-value" id="lc-kpi-inv">R$ 21k</div><div class="kpi-delta" id="lc-kpi-inv-d"></div><div class="kpi-sub">Jun/25 – Mar/26</div></div>
+    <div class="kpi blue"  ><div class="kpi-icon">👥</div><div class="kpi-label">Leads</div><div class="kpi-value" id="lc-kpi-leads">359</div><div class="kpi-delta" id="lc-kpi-leads-d"></div><div class="kpi-sub">Pagos + Orgânicos</div></div>
+    <div class="kpi blue"  ><div class="kpi-icon">🎯</div><div class="kpi-label">SQLs</div><div class="kpi-value" id="lc-kpi-sql">50</div><div class="kpi-delta" id="lc-kpi-sql-d"></div><div class="kpi-sub">Leads qualificados</div></div>
+    <div class="kpi green" ><div class="kpi-icon">📝</div><div class="kpi-label">Contratos</div><div class="kpi-value" id="lc-kpi-cont">5</div><div class="kpi-delta" id="lc-kpi-cont-d"></div><div class="kpi-sub">Ticket médio R$ 900/mês</div></div>
+    <div class="kpi orange"><div class="kpi-icon">💵</div><div class="kpi-label">LTV Projetado</div><div class="kpi-value" id="lc-kpi-ltv">R$ 108k</div><div class="kpi-delta" id="lc-kpi-ltv-d"></div><div class="kpi-sub">5 × R$ 21.600</div></div>
   </div>
   <div class="section-title">Funil de Conversão</div>
   <div class="grid-2">
-    <div class="card"><div class="card-title">Leads → MQL → SQL → Contratos <span class="badge badge-purple">por mês</span></div><canvas id="lc-funil" height="240"></canvas></div>
+    <div class="card"><div class="card-title">Leads → MQL → SQL → Contratos <span class="badge badge-purple" id="lc-badge">por mês</span></div><canvas id="lc-funil" height="240"></canvas></div>
     <div class="card"><div class="card-title">Investimento vs LTV Projetado (R$)</div><canvas id="lc-inv-lucro" height="240"></canvas></div>
   </div>
   <div class="section-title">Eficiência de Custo</div>
@@ -254,74 +253,68 @@ body.light #theme-btn:hover{border-color:#94a3b8;color:#0f172a;}
   <div class="section-title">Tabela Detalhada</div>
   <div class="card grid-1">
     <table class="data-table">
-      <thead><tr><th>Mês</th><th class="num">Investimento</th><th class="num">Leads</th><th class="num">MQL</th><th class="num">SQL</th><th class="num">Contratos</th><th class="num">Custo/Lead</th><th class="num">Custo/SQL</th><th class="num">LTV Proj.</th></tr></thead>
+      <thead><tr><th id="lc-th-per">Mês</th><th class="num">Investimento</th><th class="num">Leads</th><th class="num">MQL</th><th class="num">SQL</th><th class="num">Contratos</th><th class="num">Custo/Lead</th><th class="num">Custo/SQL</th><th class="num">LTV Proj.</th></tr></thead>
       <tbody id="lc-table-body"></tbody>
     </table>
   </div>
-</div>
-</div>
+</div></div>
 
 <!-- LEGAL ÉTICA -->
-<div class="tab-panel" id="panel-le">
-<div class="container">
+<div class="tab-panel" id="panel-le"><div class="container">
   <div class="kpis kpis-5">
-    <div class="kpi green"><div class="kpi-icon">💰</div><div class="kpi-label">Total Investido</div><div class="kpi-value">R$ 12,8k</div><div class="kpi-sub">Jun/25 – Mar/26</div></div>
-    <div class="kpi blue"><div class="kpi-icon">👥</div><div class="kpi-label">Total de Leads</div><div class="kpi-value">1.231</div><div class="kpi-sub">Pagos + Orgânicos</div></div>
-    <div class="kpi blue"><div class="kpi-icon">🎯</div><div class="kpi-label">Total de SQLs</div><div class="kpi-value">47</div><div class="kpi-sub">Leads qualificados p/ venda</div></div>
-    <div class="kpi green"><div class="kpi-icon">📝</div><div class="kpi-label">Contratos Fechados</div><div class="kpi-value">9</div><div class="kpi-sub">Ticket médio R$ 500</div></div>
-    <div class="kpi orange"><div class="kpi-icon">💵</div><div class="kpi-label">LTV Projetado</div><div class="kpi-value">R$ 54k</div><div class="kpi-sub">9 contratos × R$ 6.000</div></div>
+    <div class="kpi green" ><div class="kpi-icon">💰</div><div class="kpi-label">Investimento</div><div class="kpi-value" id="le-kpi-inv">R$ 12,8k</div><div class="kpi-delta" id="le-kpi-inv-d"></div><div class="kpi-sub">Jun/25 – Mar/26</div></div>
+    <div class="kpi blue"  ><div class="kpi-icon">👥</div><div class="kpi-label">Leads</div><div class="kpi-value" id="le-kpi-leads">1.231</div><div class="kpi-delta" id="le-kpi-leads-d"></div><div class="kpi-sub">Pagos + Orgânicos</div></div>
+    <div class="kpi blue"  ><div class="kpi-icon">🎯</div><div class="kpi-label">SQLs</div><div class="kpi-value" id="le-kpi-sql">47</div><div class="kpi-delta" id="le-kpi-sql-d"></div><div class="kpi-sub">Leads qualificados</div></div>
+    <div class="kpi green" ><div class="kpi-icon">📝</div><div class="kpi-label">Contratos</div><div class="kpi-value" id="le-kpi-cont">9</div><div class="kpi-delta" id="le-kpi-cont-d"></div><div class="kpi-sub">Ticket médio R$ 500/mês</div></div>
+    <div class="kpi orange"><div class="kpi-icon">💵</div><div class="kpi-label">LTV Projetado</div><div class="kpi-value" id="le-kpi-ltv">R$ 54k</div><div class="kpi-delta" id="le-kpi-ltv-d"></div><div class="kpi-sub">9 × R$ 6.000</div></div>
   </div>
   <div class="section-title">Funil de Conversão</div>
   <div class="grid-2">
-    <div class="card"><div class="card-title">Leads → MQL → SQL → Contratos <span class="badge badge-green">por mês</span></div><canvas id="le-funil" height="240"></canvas></div>
+    <div class="card"><div class="card-title">Leads → MQL → SQL → Contratos <span class="badge badge-green" id="le-badge">por mês</span></div><canvas id="le-funil" height="240"></canvas></div>
     <div class="card"><div class="card-title">Investimento vs LTV Projetado (R$)</div><canvas id="le-inv-lucro" height="240"></canvas></div>
   </div>
   <div class="section-title">Eficiência de Custo</div>
   <div class="grid-2">
     <div class="card"><div class="card-title">Custo por Lead (R$)</div><canvas id="le-custo-lead" height="200"></canvas></div>
-    <div class="card"><div class="card-title">Contratos por Mês</div><canvas id="le-contratos" height="200"></canvas></div>
+    <div class="card"><div class="card-title">Contratos por Período</div><canvas id="le-contratos" height="200"></canvas></div>
   </div>
   <div class="section-title">Tabela Detalhada</div>
   <div class="card grid-1">
     <table class="data-table">
-      <thead><tr><th>Mês</th><th class="num">Investimento</th><th class="num">Leads</th><th class="num">MQL</th><th class="num">SQL</th><th class="num">Contratos</th><th class="num">Custo/Lead</th><th class="num">LTV Proj.</th></tr></thead>
+      <thead><tr><th id="le-th-per">Mês</th><th class="num">Investimento</th><th class="num">Leads</th><th class="num">MQL</th><th class="num">SQL</th><th class="num">Contratos</th><th class="num">Custo/Lead</th><th class="num">LTV Proj.</th></tr></thead>
       <tbody id="le-table-body"></tbody>
     </table>
   </div>
-</div>
-</div>
+</div></div>
 
 <!-- VIGNA TAX -->
-<div class="tab-panel" id="panel-tax">
-<div class="container">
+<div class="tab-panel" id="panel-tax"><div class="container">
   <div class="kpis kpis-4">
-    <div class="kpi blue"><div class="kpi-icon">💰</div><div class="kpi-label">Total Investido</div><div class="kpi-value">R$ 5,5k</div><div class="kpi-sub">Out/25 – Fev/26</div></div>
-    <div class="kpi blue"><div class="kpi-icon">👥</div><div class="kpi-label">Leads Gerados</div><div class="kpi-value">178</div><div class="kpi-sub">Set/25 – Fev/26</div></div>
-    <div class="kpi green"><div class="kpi-icon">📝</div><div class="kpi-label">Contratos</div><div class="kpi-value">1</div><div class="kpi-sub">Out/25</div></div>
-    <div class="kpi orange"><div class="kpi-icon">🔍</div><div class="kpi-label">Search Orgânico Pico</div><div class="kpi-value">1.010</div><div class="kpi-sub">Dez/25 — maior mês</div></div>
+    <div class="kpi blue"  ><div class="kpi-icon">💰</div><div class="kpi-label">Investimento</div><div class="kpi-value" id="tax-kpi-inv">R$ 5,5k</div><div class="kpi-delta" id="tax-kpi-inv-d"></div><div class="kpi-sub">Ago/25 – Dez/25</div></div>
+    <div class="kpi blue"  ><div class="kpi-icon">👥</div><div class="kpi-label">Leads Gerados</div><div class="kpi-value" id="tax-kpi-leads">178</div><div class="kpi-delta" id="tax-kpi-leads-d"></div><div class="kpi-sub">Set/25 – Jan/26</div></div>
+    <div class="kpi green" ><div class="kpi-icon">📝</div><div class="kpi-label">Contratos</div><div class="kpi-value" id="tax-kpi-cont">1</div><div class="kpi-delta" id="tax-kpi-cont-d"></div><div class="kpi-sub">Out/25</div></div>
+    <div class="kpi orange"><div class="kpi-icon">🔍</div><div class="kpi-label">Search Orgânico Pico</div><div class="kpi-value">1.010</div><div class="kpi-delta"></div><div class="kpi-sub">Dez/25 — maior mês</div></div>
   </div>
   <div class="section-title">Alcance Orgânico</div>
   <div class="grid-2">
     <div class="card"><div class="card-title">Social + Search Orgânico (sessões engajadas)</div><canvas id="tax-organic" height="240"></canvas></div>
-    <div class="card"><div class="card-title">Funil de Leads</div><canvas id="tax-funil" height="240"></canvas></div>
+    <div class="card"><div class="card-title">Funil de Leads (meses com dados)</div><canvas id="tax-funil" height="240"></canvas></div>
   </div>
   <div class="section-title">Tabela Detalhada</div>
   <div class="card grid-1">
     <table class="data-table">
-      <thead><tr><th>Mês</th><th class="num">Investimento</th><th class="num">Leads Pagos</th><th class="num">Leads Org.</th><th class="num">MQL</th><th class="num">SQL</th><th class="num">Contratos</th><th class="num">Social Eng.</th><th class="num">Search Eng.</th></tr></thead>
+      <thead><tr><th id="tax-th-per">Mês</th><th class="num">Investimento</th><th class="num">Leads Pagos</th><th class="num">Leads Org.</th><th class="num">MQL</th><th class="num">SQL</th><th class="num">Contratos</th><th class="num">Social Eng.</th><th class="num">Search Eng.</th></tr></thead>
       <tbody id="tax-table-body"></tbody>
     </table>
   </div>
-</div>
-</div>
+</div></div>
 
 <!-- VIGNA A.A -->
-<div class="tab-panel" id="panel-aa">
-<div class="container">
+<div class="tab-panel" id="panel-aa"><div class="container">
   <div class="kpis kpis-3">
-    <div class="kpi orange"><div class="kpi-icon">💰</div><div class="kpi-label">Total Investido Ads</div><div class="kpi-value">R$ 3,4k</div><div class="kpi-sub">Jul/25 – Ago/25</div></div>
-    <div class="kpi blue"><div class="kpi-icon">🔍</div><div class="kpi-label">Organic Search Total</div><div class="kpi-value">20.859</div><div class="kpi-sub">Jan/25 – Out/25</div></div>
-    <div class="kpi green"><div class="kpi-icon">📣</div><div class="kpi-label">Social Pico</div><div class="kpi-value">67</div><div class="kpi-sub">Fev/25 — maior engajamento</div></div>
+    <div class="kpi orange"><div class="kpi-icon">💰</div><div class="kpi-label">Investimento Ads</div><div class="kpi-value" id="aa-kpi-inv">R$ 3,4k</div><div class="kpi-delta" id="aa-kpi-inv-d"></div><div class="kpi-sub">Jul/25 – Ago/25</div></div>
+    <div class="kpi blue"  ><div class="kpi-icon">🔍</div><div class="kpi-label">Organic Search Total</div><div class="kpi-value">20.859</div><div class="kpi-delta"></div><div class="kpi-sub">Jan/25 – Out/25</div></div>
+    <div class="kpi green" ><div class="kpi-icon">📣</div><div class="kpi-label">Social Pico</div><div class="kpi-value">67</div><div class="kpi-delta"></div><div class="kpi-sub">Fev/25 — maior engajamento</div></div>
   </div>
   <div class="section-title">Presença Orgânica</div>
   <div class="grid-2">
@@ -331,76 +324,69 @@ body.light #theme-btn:hover{border-color:#94a3b8;color:#0f172a;}
   <div class="section-title">Tabela Detalhada</div>
   <div class="card grid-1">
     <table class="data-table">
-      <thead><tr><th>Mês</th><th class="num">Social Engajado</th><th class="num">Search Engajado</th><th class="num">Receita Ads</th></tr></thead>
+      <thead><tr><th id="aa-th-per">Mês</th><th class="num">Social Engajado</th><th class="num">Search Engajado</th><th class="num">Receita Ads</th></tr></thead>
       <tbody id="aa-table-body"></tbody>
     </table>
   </div>
-</div>
-</div>
+</div></div>
 
 <!-- COMPLIANCE -->
-<div class="tab-panel" id="panel-cc">
-<div class="container">
-  <div class="empty-state"><div class="icon">📋</div><h3>Compliance Control</h3><p>Nenhum dado de marketing registrado ainda nesta marca.<br>Assim que os dados forem inseridos na planilha, aparecerão aqui automaticamente.</p></div>
-</div>
-</div>
+<div class="tab-panel" id="panel-cc"><div class="container">
+  <div class="empty-state"><div class="icon">📋</div><h3>Compliance Control</h3><p>Nenhum dado de marketing registrado ainda.<br>Assim que os dados forem inseridos, aparecerão aqui.</p></div>
+</div></div>
 
 <!-- LEGAL HUB -->
-<div class="tab-panel" id="panel-lh">
-<div class="container">
-  <div class="empty-state"><div class="icon">🏛️</div><h3>Legal Hub</h3><p>Nenhum dado de marketing registrado ainda nesta marca.<br>Assim que os dados forem inseridos na planilha, aparecerão aqui automaticamente.</p></div>
-</div>
-</div>
+<div class="tab-panel" id="panel-lh"><div class="container">
+  <div class="empty-state"><div class="icon">🏛️</div><h3>Legal Hub</h3><p>Nenhum dado de marketing registrado ainda.<br>Assim que os dados forem inseridos, aparecerão aqui.</p></div>
+</div></div>
 
 <footer>Grupo Vigna · Dashboard Growth Marketing · Abril 2026</footer>
 
 <script>
-const MESES = ['Jun/25','Jul/25','Aug/25','Sep/25','Oct/25','Nov/25','Dec/25','Jan/26','Feb/26','Mar/26'];
-
+// ══════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════
 const LC = [
-  {mes:'Jun/25',investimento:0,leads:0,mql:0,sql:0,contratos:0,lucro:0,custo_lead:0,custo_sql:0},
-  {mes:'Jul/25',investimento:3008.14,leads:6,mql:1,sql:1,contratos:0,lucro:0,custo_lead:501.36,custo_sql:3008.14},
-  {mes:'Aug/25',investimento:3489.94,leads:53,mql:15,sql:7,contratos:0,lucro:0,custo_lead:65.85,custo_sql:498.56},
-  {mes:'Sep/25',investimento:2570.17,leads:27,mql:11,sql:5,contratos:1,lucro:21600,custo_lead:95.19,custo_sql:514.03},
-  {mes:'Oct/25',investimento:1235,leads:42,mql:18,sql:10,contratos:1,lucro:21600,custo_lead:29.4,custo_sql:123.5},
-  {mes:'Nov/25',investimento:471.24,leads:44,mql:9,sql:4,contratos:0,lucro:0,custo_lead:10.71,custo_sql:117.81},
-  {mes:'Dec/25',investimento:2401.99,leads:35,mql:10,sql:2,contratos:1,lucro:21600,custo_lead:68.63,custo_sql:1200.99},
-  {mes:'Jan/26',investimento:1875.16,leads:38,mql:14,sql:6,contratos:0,lucro:0,custo_lead:49.35,custo_sql:312.53},
-  {mes:'Feb/26',investimento:2577.73,leads:50,mql:19,sql:9,contratos:1,lucro:21600,custo_lead:51.55,custo_sql:286.41},
-  {mes:'Mar/26',investimento:3383.56,leads:64,mql:26,sql:6,contratos:1,lucro:21600,custo_lead:52.87,custo_sql:563.93},
+  {mes:'Jun/25',investimento:0,     leads:0,  mql:0,  sql:0,  contratos:0, lucro:0,     custo_lead:0,      custo_sql:0},
+  {mes:'Jul/25',investimento:3008.14,leads:6,  mql:1,  sql:1,  contratos:0, lucro:0,     custo_lead:501.36, custo_sql:3008.14},
+  {mes:'Aug/25',investimento:3489.94,leads:53, mql:15, sql:7,  contratos:0, lucro:0,     custo_lead:65.85,  custo_sql:498.56},
+  {mes:'Sep/25',investimento:2570.17,leads:27, mql:11, sql:5,  contratos:1, lucro:21600,  custo_lead:95.19,  custo_sql:514.03},
+  {mes:'Oct/25',investimento:1235,   leads:42, mql:18, sql:10, contratos:1, lucro:21600,  custo_lead:29.4,   custo_sql:123.5},
+  {mes:'Nov/25',investimento:471.24, leads:44, mql:9,  sql:4,  contratos:0, lucro:0,     custo_lead:10.71,  custo_sql:117.81},
+  {mes:'Dec/25',investimento:2401.99,leads:35, mql:10, sql:2,  contratos:1, lucro:21600,  custo_lead:68.63,  custo_sql:1200.99},
+  {mes:'Jan/26',investimento:1875.16,leads:38, mql:14, sql:6,  contratos:0, lucro:0,     custo_lead:49.35,  custo_sql:312.53},
+  {mes:'Feb/26',investimento:2577.73,leads:50, mql:19, sql:9,  contratos:1, lucro:21600,  custo_lead:51.55,  custo_sql:286.41},
+  {mes:'Mar/26',investimento:3383.56,leads:64, mql:26, sql:6,  contratos:1, lucro:21600,  custo_lead:52.87,  custo_sql:563.93},
 ];
-
 const LE = [
-  {mes:'Jun/25',investimento:0,leads:0,mql:0,sql:0,contratos:0,lucro:0,custo_lead:0},
-  {mes:'Jul/25',investimento:1743.74,leads:73,mql:2,sql:2,contratos:2,lucro:12000,custo_lead:23.89},
-  {mes:'Aug/25',investimento:3072.58,leads:666,mql:3,sql:3,contratos:1,lucro:6000,custo_lead:4.61},
-  {mes:'Sep/25',investimento:800.17,leads:99,mql:13,sql:11,contratos:1,lucro:6000,custo_lead:8.08},
-  {mes:'Oct/25',investimento:318,leads:41,mql:19,sql:8,contratos:3,lucro:18000,custo_lead:7.76},
-  {mes:'Nov/25',investimento:2321.67,leads:115,mql:41,sql:5,contratos:0,lucro:0,custo_lead:20.19},
-  {mes:'Dec/25',investimento:1979.78,leads:62,mql:18,sql:4,contratos:1,lucro:6000,custo_lead:31.93},
-  {mes:'Jan/26',investimento:870.26,leads:68,mql:31,sql:4,contratos:0,lucro:0,custo_lead:12.8},
-  {mes:'Feb/26',investimento:1676.4,leads:106,mql:38,sql:5,contratos:1,lucro:6000,custo_lead:15.82},
-  {mes:'Mar/26',investimento:0,leads:1,mql:1,sql:5,contratos:0,lucro:0,custo_lead:0},
+  {mes:'Jun/25',investimento:0,     leads:0,   mql:0,  sql:0,  contratos:0, lucro:0,    custo_lead:0},
+  {mes:'Jul/25',investimento:1743.74,leads:73,  mql:2,  sql:2,  contratos:2, lucro:12000, custo_lead:23.89},
+  {mes:'Aug/25',investimento:3072.58,leads:666, mql:3,  sql:3,  contratos:1, lucro:6000,  custo_lead:4.61},
+  {mes:'Sep/25',investimento:800.17, leads:99,  mql:13, sql:11, contratos:1, lucro:6000,  custo_lead:8.08},
+  {mes:'Oct/25',investimento:318,    leads:41,  mql:19, sql:8,  contratos:3, lucro:18000, custo_lead:7.76},
+  {mes:'Nov/25',investimento:2321.67,leads:115, mql:41, sql:5,  contratos:0, lucro:0,    custo_lead:20.19},
+  {mes:'Dec/25',investimento:1979.78,leads:62,  mql:18, sql:4,  contratos:1, lucro:6000,  custo_lead:31.93},
+  {mes:'Jan/26',investimento:870.26, leads:68,  mql:31, sql:4,  contratos:0, lucro:0,    custo_lead:12.8},
+  {mes:'Feb/26',investimento:1676.4, leads:106, mql:38, sql:5,  contratos:1, lucro:6000,  custo_lead:15.82},
+  {mes:'Mar/26',investimento:0,      leads:1,   mql:1,  sql:5,  contratos:0, lucro:0,    custo_lead:0},
 ];
-
 const TAX = [
-  {mes:'Jan/25',leads_pagos:0,leads_org:0,mql:0,sql:0,contratos:0,social:32,search:103,investimento:0},
-  {mes:'Feb/25',leads_pagos:0,leads_org:0,mql:0,sql:0,contratos:0,social:17,search:78,investimento:0},
-  {mes:'Mar/25',leads_pagos:0,leads_org:0,mql:0,sql:0,contratos:0,social:213,search:132,investimento:0},
-  {mes:'Apr/25',leads_pagos:0,leads_org:0,mql:0,sql:0,contratos:0,social:275,search:146,investimento:0},
-  {mes:'May/25',leads_pagos:0,leads_org:0,mql:0,sql:0,contratos:0,social:33,search:149,investimento:0},
-  {mes:'Jun/25',leads_pagos:0,leads_org:0,mql:0,sql:0,contratos:0,social:31,search:178,investimento:0},
-  {mes:'Jul/25',leads_pagos:0,leads_org:0,mql:0,sql:0,contratos:0,social:40,search:139,investimento:0},
-  {mes:'Aug/25',leads_pagos:0,leads_org:0,mql:0,sql:0,contratos:0,social:24,search:196,investimento:1726.81},
-  {mes:'Sep/25',leads_pagos:115,leads_org:0,mql:19,sql:0,contratos:0,social:29,search:263,investimento:1470.11},
-  {mes:'Oct/25',leads_pagos:41,leads_org:0,mql:8,sql:1,contratos:1,social:33,search:367,investimento:519.59},
-  {mes:'Nov/25',leads_pagos:3,leads_org:4,mql:1,sql:0,contratos:0,social:14,search:464,investimento:658.96},
-  {mes:'Dec/25',leads_pagos:13,leads_org:2,mql:3,sql:0,contratos:0,social:15,search:1010,investimento:1122.47},
-  {mes:'Jan/26',leads_pagos:0,leads_org:6,mql:3,sql:0,contratos:0,social:25,search:656,investimento:0},
-  {mes:'Feb/26',leads_pagos:0,leads_org:0,mql:0,sql:0,contratos:0,social:0,search:0,investimento:0},
-  {mes:'Mar/26',leads_pagos:0,leads_org:0,mql:0,sql:0,contratos:0,social:0,search:0,investimento:0},
+  {mes:'Jan/25',leads_pagos:0,  leads_org:0,mql:0, sql:0,contratos:0,social:32, search:103, investimento:0},
+  {mes:'Feb/25',leads_pagos:0,  leads_org:0,mql:0, sql:0,contratos:0,social:17, search:78,  investimento:0},
+  {mes:'Mar/25',leads_pagos:0,  leads_org:0,mql:0, sql:0,contratos:0,social:213,search:132, investimento:0},
+  {mes:'Apr/25',leads_pagos:0,  leads_org:0,mql:0, sql:0,contratos:0,social:275,search:146, investimento:0},
+  {mes:'May/25',leads_pagos:0,  leads_org:0,mql:0, sql:0,contratos:0,social:33, search:149, investimento:0},
+  {mes:'Jun/25',leads_pagos:0,  leads_org:0,mql:0, sql:0,contratos:0,social:31, search:178, investimento:0},
+  {mes:'Jul/25',leads_pagos:0,  leads_org:0,mql:0, sql:0,contratos:0,social:40, search:139, investimento:0},
+  {mes:'Aug/25',leads_pagos:0,  leads_org:0,mql:0, sql:0,contratos:0,social:24, search:196, investimento:1726.81},
+  {mes:'Sep/25',leads_pagos:115,leads_org:0,mql:19,sql:0,contratos:0,social:29, search:263, investimento:1470.11},
+  {mes:'Oct/25',leads_pagos:41, leads_org:0,mql:8, sql:1,contratos:1,social:33, search:367, investimento:519.59},
+  {mes:'Nov/25',leads_pagos:3,  leads_org:4,mql:1, sql:0,contratos:0,social:14, search:464, investimento:658.96},
+  {mes:'Dec/25',leads_pagos:13, leads_org:2,mql:3, sql:0,contratos:0,social:15, search:1010,investimento:1122.47},
+  {mes:'Jan/26',leads_pagos:0,  leads_org:6,mql:3, sql:0,contratos:0,social:25, search:656, investimento:0},
+  {mes:'Feb/26',leads_pagos:0,  leads_org:0,mql:0, sql:0,contratos:0,social:0,  search:0,   investimento:0},
+  {mes:'Mar/26',leads_pagos:0,  leads_org:0,mql:0, sql:0,contratos:0,social:0,  search:0,   investimento:0},
 ];
-
 const AA = [
   {mes:'Jan/25',social:50,search:2181,receita_ads:0},
   {mes:'Feb/25',social:67,search:2162,receita_ads:0},
@@ -414,9 +400,236 @@ const AA = [
   {mes:'Oct/25',social:48,search:1836,receita_ads:0},
 ];
 
-const fmtR = v => v > 0 ? 'R$\u00a0' + Math.round(v).toLocaleString('pt-BR') : '—';
-const fmtD = v => v > 0 ? 'R$\u00a0' + v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}) : '—';
-const n    = v => v || '—';
+// ══════════════════════════════════════════════
+// FORMATTERS
+// ══════════════════════════════════════════════
+const fmtR  = v => v > 0 ? 'R$\u00a0' + Math.round(v).toLocaleString('pt-BR') : '—';
+const fmtRk = v => {
+  if (!v || v <= 0) return '—';
+  if (v >= 1000) return 'R$\u00a0' + (v/1000).toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:1}) + 'k';
+  return 'R$\u00a0' + Math.round(v).toLocaleString('pt-BR');
+};
+const fmtD  = v => v > 0 ? 'R$\u00a0' + v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}) : '—';
+const dash  = v => v > 0 ? v : '—';
+
+// ══════════════════════════════════════════════
+// PERIOD HELPERS
+// ══════════════════════════════════════════════
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const Q_MONTHS_PT = {Q1:'Jan–Mar',Q2:'Abr–Jun',Q3:'Jul–Set',Q4:'Out–Dez'};
+
+function quarterKey(mes) {
+  const [m,y] = mes.split('/');
+  return 'Q' + (Math.floor(MONTHS.indexOf(m)/3)+1) + '/' + y;
+}
+function yearKey(mes) { return '20' + mes.split('/')[1]; }
+
+// Period list based on LC date range (Jun/25–Mar/26)
+function getPeriodList(gran) {
+  const meses = LC.map(d => d.mes);
+  if (gran === 'mensal') return ['todos', ...meses];
+  const seen = new Set(), list = [];
+  const fn = gran === 'trimestral' ? quarterKey : yearKey;
+  meses.forEach(m => { const k = fn(m); if (!seen.has(k)) { seen.add(k); list.push(k); } });
+  return ['todos', ...list];
+}
+
+// Does a raw row match the current period?
+function matchesPeriod(mes, period, gran) {
+  if (period === 'todos') return true;
+  if (gran === 'mensal')     return mes === period;
+  if (gran === 'trimestral') return quarterKey(mes) === period;
+  return yearKey(mes) === period;
+}
+
+// Filter raw array to selected period rows
+function filterRows(rawArr, period, gran) {
+  return rawArr.filter(d => matchesPeriod(d.mes, period, gran));
+}
+
+// ══════════════════════════════════════════════
+// AGGREGATION (for charts)
+// ══════════════════════════════════════════════
+function aggregate(arr, gran, sumKeys, recalc) {
+  if (gran === 'mensal') return arr.map(d => ({...d}));
+  const fn = gran === 'trimestral' ? quarterKey : yearKey;
+  const map = new Map();
+  arr.forEach(d => {
+    const k = fn(d.mes);
+    if (!map.has(k)) { const o = {mes:k}; sumKeys.forEach(s => o[s]=0); map.set(k,o); }
+    const g = map.get(k);
+    sumKeys.forEach(s => { g[s] += (d[s]||0); });
+  });
+  const res = [...map.values()];
+  if (recalc) res.forEach(recalc);
+  return res;
+}
+
+const aggLC = gran => aggregate(LC, gran,
+  ['investimento','leads','mql','sql','contratos','lucro'],
+  d => { d.custo_lead = d.leads>0 ? d.investimento/d.leads : 0;
+         d.custo_sql  = d.sql>0   ? d.investimento/d.sql   : 0; });
+
+const aggLE = gran => aggregate(LE, gran,
+  ['investimento','leads','mql','sql','contratos','lucro'],
+  d => { d.custo_lead = d.leads>0 ? d.investimento/d.leads : 0; });
+
+const aggTAX = gran => aggregate(TAX, gran,
+  ['investimento','leads_pagos','leads_org','mql','sql','contratos','social','search']);
+
+const aggAA = gran => aggregate(AA, gran, ['social','search','receita_ads']);
+
+// ══════════════════════════════════════════════
+// KPI CALCULATIONS
+// ══════════════════════════════════════════════
+function s(arr, field) { return arr.reduce((t,d) => t+(d[field]||0), 0); }
+
+function calcGeral(period, gran) {
+  const lc = filterRows(LC, period, gran), le = filterRows(LE, period, gran);
+  const tx = filterRows(TAX, period, gran), aa = filterRows(AA, period, gran);
+  return {
+    inv:   s(lc,'investimento') + s(le,'investimento') + s(tx,'investimento') + s(aa,'receita_ads'),
+    leads: s(lc,'leads') + s(le,'leads') + s(tx,'leads_pagos') + s(tx,'leads_org'),
+    cont:  s(lc,'contratos') + s(le,'contratos') + s(tx,'contratos'),
+    ltv:   s(lc,'lucro') + s(le,'lucro'),
+  };
+}
+function calcLC(period, gran)  {
+  const f = filterRows(LC, period, gran);
+  return { inv:s(f,'investimento'), leads:s(f,'leads'), sql:s(f,'sql'), cont:s(f,'contratos'), ltv:s(f,'lucro') };
+}
+function calcLE(period, gran)  {
+  const f = filterRows(LE, period, gran);
+  return { inv:s(f,'investimento'), leads:s(f,'leads'), sql:s(f,'sql'), cont:s(f,'contratos'), ltv:s(f,'lucro') };
+}
+function calcTAX(period, gran) {
+  const f = filterRows(TAX, period, gran);
+  return { inv:s(f,'investimento'), leads:s(f,'leads_pagos')+s(f,'leads_org'), cont:s(f,'contratos') };
+}
+function calcAA(period, gran)  {
+  const f = filterRows(AA, period, gran);
+  return { inv:s(f,'receita_ads') };
+}
+
+// Previous period for delta
+function prevPeriod(period, gran) {
+  if (period === 'todos') return null;
+  const list = getPeriodList(gran).filter(p => p !== 'todos');
+  const i = list.indexOf(period);
+  return i > 0 ? list[i-1] : null;
+}
+
+// ══════════════════════════════════════════════
+// DELTA HTML
+// ══════════════════════════════════════════════
+function deltaHtml(curr, prev) {
+  if (prev === null || prev === undefined) return '';
+  if (prev === 0 && curr === 0) return '';
+  if (prev === 0 && curr > 0) return '<span style="color:#34d399;font-weight:700">● novo</span>';
+  if (prev === 0) return '';
+  const p = Math.round((curr-prev)/Math.abs(prev)*100);
+  if (p === 0) return '<span style="color:#64748b">= estável</span>';
+  return `<span style="color:${p>0?'#34d399':'#f87171'};font-weight:700">${p>0?'▲':'▼'} ${p>0?'+':''}${p}%</span><span style="color:#475569"> vs ant.</span>`;
+}
+
+// ══════════════════════════════════════════════
+// UPDATE KPIs
+// ══════════════════════════════════════════════
+function $set(id, html) { const el=document.getElementById(id); if(el) el.innerHTML=html; }
+
+function updateAllKPIs() {
+  const per=activePeriod, gran=activeGran, pp=prevPeriod(per,gran);
+  const isTodos = per === 'todos';
+
+  // Geral
+  const g=calcGeral(per,gran), gp=pp?calcGeral(pp,gran):null;
+  $set('g-kpi-inv',   isTodos?'R$\u00a042,7k':fmtRk(g.inv));
+  $set('g-kpi-leads', isTodos?'1.117':(g.leads>0?g.leads.toLocaleString('pt-BR'):'—'));
+  $set('g-kpi-cont',  isTodos?'15':(g.cont>0?g.cont:'—'));
+  $set('g-kpi-ltv',   isTodos?'R$\u00a0162k':fmtRk(g.ltv));
+  $set('g-kpi-inv-d',   gp?deltaHtml(g.inv,gp.inv):'');
+  $set('g-kpi-leads-d', gp?deltaHtml(g.leads,gp.leads):'');
+  $set('g-kpi-cont-d',  gp?deltaHtml(g.cont,gp.cont):'');
+  $set('g-kpi-ltv-d',   gp?deltaHtml(g.ltv,gp.ltv):'');
+
+  // Legal Control
+  const lc=calcLC(per,gran), lcp=pp?calcLC(pp,gran):null;
+  $set('lc-kpi-inv',   isTodos?'R$\u00a021k':fmtRk(lc.inv));
+  $set('lc-kpi-leads', isTodos?'359':(lc.leads>0?lc.leads:'—'));
+  $set('lc-kpi-sql',   isTodos?'50':(lc.sql>0?lc.sql:'—'));
+  $set('lc-kpi-cont',  isTodos?'5':(lc.cont>0?lc.cont:'—'));
+  $set('lc-kpi-ltv',   isTodos?'R$\u00a0108k':fmtRk(lc.ltv));
+  $set('lc-kpi-inv-d',   lcp?deltaHtml(lc.inv,lcp.inv):'');
+  $set('lc-kpi-leads-d', lcp?deltaHtml(lc.leads,lcp.leads):'');
+  $set('lc-kpi-sql-d',   lcp?deltaHtml(lc.sql,lcp.sql):'');
+  $set('lc-kpi-cont-d',  lcp?deltaHtml(lc.cont,lcp.cont):'');
+  $set('lc-kpi-ltv-d',   lcp?deltaHtml(lc.ltv,lcp.ltv):'');
+
+  // Legal Ética
+  const le=calcLE(per,gran), lep=pp?calcLE(pp,gran):null;
+  $set('le-kpi-inv',   isTodos?'R$\u00a012,8k':fmtRk(le.inv));
+  $set('le-kpi-leads', isTodos?'1.231':(le.leads>0?le.leads:'—'));
+  $set('le-kpi-sql',   isTodos?'47':(le.sql>0?le.sql:'—'));
+  $set('le-kpi-cont',  isTodos?'9':(le.cont>0?le.cont:'—'));
+  $set('le-kpi-ltv',   isTodos?'R$\u00a054k':fmtRk(le.ltv));
+  $set('le-kpi-inv-d',   lep?deltaHtml(le.inv,lep.inv):'');
+  $set('le-kpi-leads-d', lep?deltaHtml(le.leads,lep.leads):'');
+  $set('le-kpi-sql-d',   lep?deltaHtml(le.sql,lep.sql):'');
+  $set('le-kpi-cont-d',  lep?deltaHtml(le.cont,lep.cont):'');
+  $set('le-kpi-ltv-d',   lep?deltaHtml(le.ltv,lep.ltv):'');
+
+  // Vigna Tax
+  const tx=calcTAX(per,gran), txp=pp?calcTAX(pp,gran):null;
+  $set('tax-kpi-inv',   isTodos?'R$\u00a05,5k':fmtRk(tx.inv));
+  $set('tax-kpi-leads', isTodos?'178':(tx.leads>0?tx.leads:'—'));
+  $set('tax-kpi-cont',  isTodos?'1':(tx.cont>0?tx.cont:'—'));
+  $set('tax-kpi-inv-d',   txp?deltaHtml(tx.inv,txp.inv):'');
+  $set('tax-kpi-leads-d', txp?deltaHtml(tx.leads,txp.leads):'');
+  $set('tax-kpi-cont-d',  txp?deltaHtml(tx.cont,txp.cont):'');
+
+  // Vigna A.A
+  const aa=calcAA(per,gran), aap=pp?calcAA(pp,gran):null;
+  $set('aa-kpi-inv',   isTodos?'R$\u00a03,4k':fmtRk(aa.inv));
+  $set('aa-kpi-inv-d', aap?deltaHtml(aa.inv,aap.inv):'');
+
+  // Period badge labels
+  const lbl={mensal:'por mês',trimestral:'por trimestre',anual:'por ano'}[gran];
+  $set('lc-badge',lbl); $set('le-badge',lbl);
+
+  // Context bar
+  updateContextBar();
+}
+
+function updateContextBar() {
+  const bar  = document.getElementById('ctx-bar');
+  const text = document.getElementById('ctx-text');
+  const per  = activePeriod, gran = activeGran;
+  if (per === 'todos') { bar.style.display = 'none'; return; }
+  bar.style.display = 'flex';
+  let label = per;
+  if (gran === 'trimestral') {
+    const q = per.split('/')[0];
+    label = `${per} · ${Q_MONTHS_PT[q] || ''}`;
+  }
+  text.textContent = `Exibindo dados de ${label}`;
+}
+
+function updatePizzaChart() {
+  const per = activePeriod, gran = activeGran;
+  const lc = calcLC(per, gran), le = calcLE(per, gran);
+  const tx = calcTAX(per, gran), aa = calcAA(per, gran);
+  const c = charts['g-pizza']; if (!c) return;
+  c.data.datasets[0].data = [lc.inv, le.inv, tx.inv, aa.inv];
+  c.update();
+  const sub = document.getElementById('pizza-subtitle');
+  if (sub) sub.textContent = per === 'todos' ? '(histórico)' : `(${per})`;
+}
+
+// ══════════════════════════════════════════════
+// CHART ENGINE
+// ══════════════════════════════════════════════
+let charts = {};
+function mkChart(id, cfg) { if(charts[id]) charts[id].destroy(); charts[id]=new Chart(document.getElementById(id),cfg); }
 
 Chart.defaults.color = '#64748b';
 Chart.defaults.borderColor = '#2d3748';
@@ -427,170 +640,324 @@ Chart.defaults.plugins.legend.labels.padding = 14;
 const gO = { y:{grid:{color:'#1e2535'}}, x:{grid:{display:false}} };
 const lineOpts = (c,ca) => ({borderColor:c,backgroundColor:ca,fill:true,tension:.4,pointBackgroundColor:c,pointRadius:4,pointHoverRadius:6});
 
+// Color array with all bars at full opacity (used at render time / when todos)
+function fullColors(data, r, g, b, a) {
+  return data.map(() => `rgba(${r},${g},${b},${a})`);
+}
+// Attach metadata to a dataset for later highlight updates
+function cm(r,g,b,a) { return {r,g,b,full:a}; }
+
+// Update bar chart highlights without recreating the chart
+// Fix: compare labels directly (not via matchesPeriod, which would need raw month strings)
+const BAR_CHARTS = ['g-invMensal','g-contratos','g-leads-contratos','lc-funil','lc-inv-lucro','lc-conv','le-funil','le-inv-lucro','le-contratos','tax-funil','aa-receita'];
+
+function updateChartHighlights() {
+  const per = activePeriod;
+  BAR_CHARTS.forEach(id => {
+    const c = charts[id]; if (!c) return;
+    c.data.datasets.forEach(ds => {
+      if (!ds._cm) return;
+      const {r,g,b,full} = ds._cm;
+      ds.backgroundColor = c.data.labels.map(lbl =>
+        per === 'todos' || lbl === per
+          ? `rgba(${r},${g},${b},${full})`
+          : `rgba(${r},${g},${b},0.1)`
+      );
+    });
+    c.update('none');
+  });
+}
+
+// ══════════════════════════════════════════════
+// RENDER CHARTS
+// ══════════════════════════════════════════════
+function renderCharts() {
+  const gran = activeGran;
+  const lcD=aggLC(gran), leD=aggLE(gran), taxD=aggTAX(gran), aaD=aggAA(gran);
+
+  // ── VISÃO GERAL ──────────────────────────────
+  const gLbls = lcD.map(d=>d.mes);
+  const taxInv = gLbls.map(l => { const t=taxD.find(x=>x.mes===l); return t?t.investimento:0; });
+  const aaInv  = gLbls.map(l => { const a=aaD.find(x=>x.mes===l);  return a?a.receita_ads:0;  });
+
+  mkChart('g-invMensal',{type:'bar',data:{labels:gLbls,datasets:[
+    {label:'Legal Control',data:lcD.map(d=>d.investimento), backgroundColor:fullColors(lcD,249,115,22,.8), borderRadius:4,_cm:cm(249,115,22,.8)},
+    {label:'Legal Ética',  data:leD.map(d=>d.investimento), backgroundColor:fullColors(leD,239,68,68,.8),  borderRadius:4,_cm:cm(239,68,68,.8)},
+    {label:'Vigna Tax',    data:taxInv,                      backgroundColor:fullColors(gLbls,234,179,8,.8),borderRadius:4,_cm:cm(234,179,8,.8)},
+    {label:'Vigna A.A',    data:aaInv,                       backgroundColor:fullColors(gLbls,29,78,216,.8),borderRadius:4,_cm:cm(29,78,216,.8)},
+  ]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>'R$'+(v/1000).toFixed(0)+'k'}}},responsive:true}});
+
+  mkChart('g-pizza',{type:'doughnut',data:{labels:['Legal Control','Legal Ética','Vigna Tax','Vigna A.A'],datasets:[{data:[21012.93,12782.6,5497.94,3436.23],backgroundColor:['rgba(249,115,22,.85)','rgba(239,68,68,.85)','rgba(234,179,8,.85)','rgba(29,78,216,.85)'],borderColor:'rgba(255,255,255,0.05)',borderWidth:2}]},options:{cutout:'65%',plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:ctx=>' R$ '+Math.round(ctx.parsed).toLocaleString('pt-BR')}}}}});
+
+  mkChart('g-contratos',{type:'bar',data:{labels:gLbls,datasets:[
+    {label:'Legal Control',data:lcD.map(d=>d.contratos),backgroundColor:fullColors(lcD,249,115,22,.9),borderRadius:4,_cm:cm(249,115,22,.9)},
+    {label:'Legal Ética',  data:leD.map(d=>d.contratos),backgroundColor:fullColors(leD,239,68,68,.9), borderRadius:4,_cm:cm(239,68,68,.9)},
+  ]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO,y:{...gO.y,ticks:{stepSize:1}}},responsive:true}});
+
+  mkChart('g-leads-contratos',{type:'bar',data:{labels:gLbls,datasets:[
+    {label:'Leads (LC+LE)',   data:lcD.map((d,i)=>d.leads+(leD[i]?.leads||0)),     backgroundColor:fullColors(lcD,249,115,22,.2),borderRadius:4,_cm:cm(249,115,22,.2)},
+    {label:'Contratos (LC+LE)',data:lcD.map((d,i)=>d.contratos+(leD[i]?.contratos||0)),backgroundColor:fullColors(lcD,251,146,60,.9),borderRadius:4,_cm:cm(251,146,60,.9)},
+  ]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
+
+  // ── LEGAL CONTROL ─────────────────────────────
+  const lcLbls = lcD.map(d=>d.mes);
+  mkChart('lc-funil',{type:'bar',data:{labels:lcLbls,datasets:[
+    {label:'Leads',    data:lcD.map(d=>d.leads),    backgroundColor:fullColors(lcD,249,115,22,.3),borderRadius:4,_cm:cm(249,115,22,.3)},
+    {label:'MQL',      data:lcD.map(d=>d.mql),      backgroundColor:fullColors(lcD,249,115,22,.6),borderRadius:4,_cm:cm(249,115,22,.6)},
+    {label:'SQL',      data:lcD.map(d=>d.sql),      backgroundColor:fullColors(lcD,249,115,22,.9),borderRadius:4,_cm:cm(249,115,22,.9)},
+    {label:'Contratos',data:lcD.map(d=>d.contratos),backgroundColor:fullColors(lcD,249,115,22,1), borderRadius:4,_cm:cm(249,115,22,1)},
+  ]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
+
+  mkChart('lc-inv-lucro',{type:'bar',data:{labels:lcLbls,datasets:[
+    {label:'Investimento', data:lcD.map(d=>d.investimento),backgroundColor:fullColors(lcD,249,115,22,.5),borderRadius:4,_cm:cm(249,115,22,.5)},
+    {label:'LTV Projetado',data:lcD.map(d=>d.lucro),        backgroundColor:fullColors(lcD,249,115,22,.9),borderRadius:4,_cm:cm(249,115,22,.9)},
+  ]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>'R$'+(v/1000).toFixed(0)+'k'}}},responsive:true}});
+
+  mkChart('lc-custo-lead',{type:'line',data:{labels:lcLbls,datasets:[{label:'R$/Lead',...lineOpts('rgba(249,115,22,1)','rgba(249,115,22,.1)'),data:lcD.map(d=>d.custo_lead)}]},options:{plugins:{legend:{display:false}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>'R$'+Math.round(v)}}},responsive:true}});
+  mkChart('lc-custo-sql', {type:'line',data:{labels:lcLbls,datasets:[{label:'R$/SQL',...lineOpts('rgba(249,115,22,1)','rgba(249,115,22,.15)'),data:lcD.map(d=>d.custo_sql)}]},options:{plugins:{legend:{display:false}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>'R$'+Math.round(v)}}},responsive:true}});
+
+  mkChart('lc-conv',{type:'bar',data:{labels:lcLbls,datasets:[{label:'Lead→Contrato %',data:lcD.map(d=>d.leads>0?+((d.contratos/d.leads)*100).toFixed(1):0),backgroundColor:fullColors(lcD,251,146,60,.8),borderRadius:4,_cm:cm(251,146,60,.8)}]},options:{plugins:{legend:{display:false}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>v+'%'}}},responsive:true}});
+
+  // ── LEGAL ÉTICA ───────────────────────────────
+  const leLbls = leD.map(d=>d.mes);
+  mkChart('le-funil',{type:'bar',data:{labels:leLbls,datasets:[
+    {label:'Leads',    data:leD.map(d=>d.leads),    backgroundColor:fullColors(leD,239,68,68,.25),borderRadius:4,_cm:cm(239,68,68,.25)},
+    {label:'MQL',      data:leD.map(d=>d.mql),      backgroundColor:fullColors(leD,239,68,68,.55),borderRadius:4,_cm:cm(239,68,68,.55)},
+    {label:'SQL',      data:leD.map(d=>d.sql),      backgroundColor:fullColors(leD,239,68,68,.85),borderRadius:4,_cm:cm(239,68,68,.85)},
+    {label:'Contratos',data:leD.map(d=>d.contratos),backgroundColor:fullColors(leD,239,68,68,1),  borderRadius:4,_cm:cm(239,68,68,1)},
+  ]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
+
+  mkChart('le-inv-lucro',{type:'bar',data:{labels:leLbls,datasets:[
+    {label:'Investimento', data:leD.map(d=>d.investimento),backgroundColor:fullColors(leD,239,68,68,.4), borderRadius:4,_cm:cm(239,68,68,.4)},
+    {label:'LTV Projetado',data:leD.map(d=>d.lucro),        backgroundColor:fullColors(leD,239,68,68,.85),borderRadius:4,_cm:cm(239,68,68,.85)},
+  ]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>'R$'+(v/1000).toFixed(0)+'k'}}},responsive:true}});
+
+  mkChart('le-custo-lead',{type:'line',data:{labels:leLbls,datasets:[{label:'R$/Lead',...lineOpts('rgba(239,68,68,1)','rgba(239,68,68,.1)'),data:leD.map(d=>d.custo_lead)}]},options:{plugins:{legend:{display:false}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>'R$'+Math.round(v)}}},responsive:true}});
+
+  mkChart('le-contratos',{type:'bar',data:{labels:leLbls,datasets:[{label:'Contratos',data:leD.map(d=>d.contratos),backgroundColor:fullColors(leD,239,68,68,.8),borderRadius:4,_cm:cm(239,68,68,.8)}]},options:{plugins:{legend:{display:false}},scales:{...gO,y:{...gO.y,ticks:{stepSize:1}}},responsive:true}});
+
+  // ── VIGNA TAX ─────────────────────────────────
+  mkChart('tax-organic',{type:'line',data:{labels:taxD.map(d=>d.mes),datasets:[
+    {label:'Organic Social',...lineOpts('rgba(234,179,8,1)','rgba(234,179,8,.1)'),   data:taxD.map(d=>d.social)},
+    {label:'Organic Search',...lineOpts('rgba(234,179,8,.7)','rgba(234,179,8,.05)'), data:taxD.map(d=>d.search)},
+  ]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
+
+  const taxFL = taxD.filter(d=>d.leads_pagos+d.leads_org>0);
+  mkChart('tax-funil',{type:'bar',data:{labels:taxFL.map(d=>d.mes),datasets:[
+    {label:'Leads Pagos',data:taxFL.map(d=>d.leads_pagos),backgroundColor:fullColors(taxFL,234,179,8,.45),borderRadius:4,_cm:cm(234,179,8,.45)},
+    {label:'Leads Org.', data:taxFL.map(d=>d.leads_org), backgroundColor:fullColors(taxFL,234,179,8,.65),borderRadius:4,_cm:cm(234,179,8,.65)},
+    {label:'MQL',        data:taxFL.map(d=>d.mql),        backgroundColor:fullColors(taxFL,234,179,8,.9), borderRadius:4,_cm:cm(234,179,8,.9)},
+    {label:'Contratos',  data:taxFL.map(d=>d.contratos),  backgroundColor:fullColors(taxFL,234,179,8,1),  borderRadius:4,_cm:cm(234,179,8,1)},
+  ]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
+
+  // ── VIGNA A.A ─────────────────────────────────
+  mkChart('aa-organic',{type:'line',data:{labels:aaD.map(d=>d.mes),datasets:[
+    {label:'Organic Social',...lineOpts('rgba(29,78,216,1)','rgba(29,78,216,.1)'),    data:aaD.map(d=>d.social)},
+    {label:'Organic Search',...lineOpts('rgba(29,78,216,.65)','rgba(29,78,216,.05)'), data:aaD.map(d=>d.search)},
+  ]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
+
+  mkChart('aa-receita',{type:'bar',data:{labels:aaD.map(d=>d.mes),datasets:[{label:'Receita Ads (R$)',data:aaD.map(d=>d.receita_ads),backgroundColor:fullColors(aaD,29,78,216,.8),borderRadius:6,_cm:cm(29,78,216,.8)}]},options:{plugins:{legend:{display:false}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>'R$'+(v/1000).toFixed(1)+'k'}}},responsive:true}});
+
+  // Apply any active period highlight
+  if (activePeriod !== 'todos') updateChartHighlights();
+}
+
+// ══════════════════════════════════════════════
+// RENDER TABLES
+// ══════════════════════════════════════════════
+// Tables always show monthly rows.
+// - period='todos' → all raw rows (monthly granularity regardless of chart gran)
+// - period selected → rows matching that period (monthly drilldown)
+function tableRows(rawArr, period, gran) {
+  return period === 'todos' ? rawArr : rawArr.filter(d => matchesPeriod(d.mes, period, gran));
+}
+
+// Table header: "Mês" for all monthly, period label for aggregated
+function thPer() {
+  return activePeriod === 'todos' && activeGran !== 'mensal' ? 'Período' : 'Mês';
+}
+
+function renderLCTable() {
+  const rows = tableRows(LC, activePeriod, activeGran);
+  $set('lc-th-per', thPer());
+  const body = document.getElementById('lc-table-body'); body.innerHTML='';
+  let t={inv:0,leads:0,mql:0,sql:0,cont:0,lucro:0};
+  rows.forEach(d=>{
+    t.inv+=d.investimento;t.leads+=d.leads;t.mql+=d.mql;t.sql+=d.sql;t.cont+=d.contratos;t.lucro+=d.lucro;
+    body.innerHTML+=`<tr><td>${d.mes}</td><td class="num">${fmtR(d.investimento)}</td><td class="num">${dash(d.leads)}</td><td class="num">${dash(d.mql)}</td><td class="num">${dash(d.sql)}</td><td class="num">${d.contratos?'<span class="positive">'+d.contratos+'</span>':'—'}</td><td class="num">${fmtD(d.custo_lead)}</td><td class="num">${fmtD(d.custo_sql)}</td><td class="num">${d.lucro?'<span class="positive">'+fmtR(d.lucro)+'</span>':'—'}</td></tr>`;
+  });
+  const tCL=t.leads>0?t.inv/t.leads:0, tCS=t.sql>0?t.inv/t.sql:0;
+  body.innerHTML+=`<tr class="total-row"><td>TOTAL</td><td class="num">${fmtR(t.inv)}</td><td class="num">${t.leads||'—'}</td><td class="num">${t.mql||'—'}</td><td class="num">${t.sql||'—'}</td><td class="num positive">${t.cont||'—'}</td><td class="num">${fmtD(tCL)}</td><td class="num">${fmtD(tCS)}</td><td class="num positive">${t.lucro?fmtR(t.lucro):'—'}</td></tr>`;
+}
+
+function renderLETable() {
+  const rows = tableRows(LE, activePeriod, activeGran);
+  $set('le-th-per', thPer());
+  const body = document.getElementById('le-table-body'); body.innerHTML='';
+  let t={inv:0,leads:0,mql:0,sql:0,cont:0,lucro:0};
+  rows.forEach(d=>{
+    t.inv+=d.investimento;t.leads+=d.leads;t.mql+=d.mql;t.sql+=d.sql;t.cont+=d.contratos;t.lucro+=d.lucro;
+    body.innerHTML+=`<tr><td>${d.mes}</td><td class="num">${fmtR(d.investimento)}</td><td class="num">${dash(d.leads)}</td><td class="num">${dash(d.mql)}</td><td class="num">${dash(d.sql)}</td><td class="num">${d.contratos?'<span class="positive">'+d.contratos+'</span>':'—'}</td><td class="num">${fmtD(d.custo_lead)}</td><td class="num">${d.lucro?'<span class="positive">'+fmtR(d.lucro)+'</span>':'—'}</td></tr>`;
+  });
+  const tCL=t.leads>0?t.inv/t.leads:0;
+  body.innerHTML+=`<tr class="total-row"><td>TOTAL</td><td class="num">${fmtR(t.inv)}</td><td class="num">${t.leads||'—'}</td><td class="num">${t.mql||'—'}</td><td class="num">${t.sql||'—'}</td><td class="num positive">${t.cont||'—'}</td><td class="num">${fmtD(tCL)}</td><td class="num positive">${t.lucro?fmtR(t.lucro):'—'}</td></tr>`;
+}
+
+function renderTAXTable() {
+  const rows = tableRows(TAX, activePeriod, activeGran);
+  $set('tax-th-per', thPer());
+  const body = document.getElementById('tax-table-body'); body.innerHTML='';
+  rows.forEach(d=>{
+    body.innerHTML+=`<tr><td>${d.mes}</td><td class="num">${fmtR(d.investimento)}</td><td class="num">${dash(d.leads_pagos)}</td><td class="num">${dash(d.leads_org)}</td><td class="num">${dash(d.mql)}</td><td class="num">${dash(d.sql)}</td><td class="num">${d.contratos?'<span class="positive">'+d.contratos+'</span>':'—'}</td><td class="num">${dash(d.social)}</td><td class="num">${dash(d.search)}</td></tr>`;
+  });
+}
+
+function renderAATable() {
+  const rows = tableRows(AA, activePeriod, activeGran);
+  $set('aa-th-per', thPer());
+  const body = document.getElementById('aa-table-body'); body.innerHTML='';
+  rows.forEach(d=>{
+    body.innerHTML+=`<tr><td>${d.mes}</td><td class="num">${dash(d.social)}</td><td class="num">${dash(d.search)}</td><td class="num">${d.receita_ads>0?'<span class="positive">'+fmtR(d.receita_ads)+'</span>':'—'}</td></tr>`;
+  });
+}
+
+function renderGeralTable() {
+  const per=activePeriod, gran=activeGran;
+  const lc=calcLC(per,gran), le=calcLE(per,gran), tx=calcTAX(per,gran), aa=calcAA(per,gran);
+  const resumo=[
+    {nome:'Legal Control',inv:lc.inv,  cont:lc.cont,  ltv:lc.ltv,  cor:'#f97316'},
+    {nome:'Legal Ética',  inv:le.inv,  cont:le.cont,  ltv:le.ltv,  cor:'#ef4444'},
+    {nome:'Vigna Tax',    inv:tx.inv,  cont:tx.cont,  ltv:0,       cor:'#eab308'},
+    {nome:'Vigna A.A',    inv:aa.inv,  cont:0,        ltv:0,       cor:'#1d4ed8'},
+    {nome:'Compliance',   inv:0,       cont:0,        ltv:0,       cor:'#64748b'},
+    {nome:'Legal Hub',    inv:0,       cont:0,        ltv:0,       cor:'#64748b'},
+  ];
+  // For 'todos', use stored historical totals to avoid floating-point drift
+  if (per === 'todos') {
+    resumo[0].inv=21012.93; resumo[0].cont=5; resumo[0].ltv=108000;
+    resumo[1].inv=12782.6;  resumo[1].cont=9; resumo[1].ltv=54000;
+    resumo[2].inv=5497.94;  resumo[2].cont=1;
+    resumo[3].inv=3436.23;
+  }
+  const totalInv=resumo.reduce((a,b)=>a+b.inv,0);
+  const totalCont=resumo.reduce((a,b)=>a+b.cont,0);
+  const totalLTV=resumo.reduce((a,b)=>a+b.ltv,0);
+  const body=document.getElementById('g-resumo-body'); body.innerHTML='';
+  resumo.forEach(r=>{
+    const pct=totalInv>0?(r.inv/totalInv*100):0;
+    const roi=r.inv>0&&r.ltv>0?Math.round((r.ltv/r.inv-1)*100)+'%':'—';
+    body.innerHTML+=`<tr><td style="font-weight:600;color:#f1f5f9">${r.nome}</td><td class="num">${r.inv>0?fmtR(r.inv):'—'}</td><td class="num">${r.inv>0?pct.toFixed(1)+'%':'—'}</td><td class="num">${r.cont>0?'<span class="positive">'+r.cont+'</span>':'—'}</td><td class="num">${r.ltv>0?'<span class="positive">'+fmtR(r.ltv)+'</span>':'—'}</td><td class="num">${r.ltv>0?'<span class="positive">'+roi+'</span>':'—'}</td><td style="min-width:130px;padding-right:16px"><div class="bar-wrap"><div class="bar-fill" style="width:${pct}%;background:${r.cor}"></div></div></td></tr>`;
+  });
+  const totalROI=totalInv>0&&totalLTV>0?Math.round((totalLTV/totalInv-1)*100)+'%':'—';
+  body.innerHTML+=`<tr class="total-row"><td>TOTAL</td><td class="num">${fmtR(totalInv)}</td><td class="num">100%</td><td class="num positive">${totalCont||'—'}</td><td class="num positive">${totalLTV>0?fmtR(totalLTV):'—'}</td><td class="num positive">${totalROI}</td><td></td></tr>`;
+}
+
+function renderAllTables() {
+  renderLCTable(); renderLETable(); renderTAXTable(); renderAATable(); renderGeralTable();
+}
+
+// ══════════════════════════════════════════════
+// STATE & CONTROLS
+// ══════════════════════════════════════════════
+let activeGran = 'mensal', activePeriod = 'todos';
+
+function renderPeriodChips() {
+  const chips = document.getElementById('period-chips');
+  chips.innerHTML = getPeriodList(activeGran).map(p =>
+    `<button class="period-chip${p==='todos'?' todos':''}${p===activePeriod?' active':''}" onclick="setPeriod('${p}')">${p==='todos'?'Todos':p}</button>`
+  ).join('');
+}
+
+function setGran(g) {
+  if (g === activeGran) return;
+  activeGran = g; activePeriod = 'todos';
+  document.querySelectorAll('.gran-btn').forEach((b,_,arr) => b.classList.toggle('active', b.id==='gb-'+g));
+  renderPeriodChips();
+  renderCharts();
+  renderAllTables();
+  updateAllKPIs();
+  updatePizzaChart();
+}
+
+function setPeriod(p) {
+  if (p === activePeriod) return;
+  activePeriod = p;
+  document.querySelectorAll('.period-chip').forEach(el =>
+    el.classList.toggle('active', el.textContent.trim() === (p==='todos'?'Todos':p))
+  );
+  updateAllKPIs();
+  updateChartHighlights();
+  renderAllTables();
+  updatePizzaChart();
+}
+
+// ══════════════════════════════════════════════
+// TAB NAVIGATION
+// ══════════════════════════════════════════════
 function countUpEl(el) {
-  const raw = el.textContent.trim();
-  const m = raw.match(/[\d.]+(?:,\d+)?/);
-  if (!m) return;
-  const num = parseFloat(m[0].replace(/\./g,'').replace(',','.'));
-  if (!num) return;
-  const pre = raw.slice(0, raw.search(/\d/));
-  const suf = raw.slice(raw.search(/\d/) + m[0].length);
-  const hasDec = m[0].includes(',');
-  const dur = 900, t0 = performance.now();
-  const tick = now => {
-    const p = Math.min((now-t0)/dur, 1);
-    const v = (1-Math.pow(1-p,3)) * num;
-    el.textContent = pre + (hasDec ? v.toFixed(1).replace('.',',') : Math.round(v).toLocaleString('pt-BR')) + suf;
-    if (p < 1) requestAnimationFrame(tick); else el.textContent = raw;
+  const raw=el.textContent.trim();
+  const m=raw.match(/[\d.]+(?:,\d+)?/); if(!m) return;
+  const num=parseFloat(m[0].replace(/\./g,'').replace(',','.')); if(!num) return;
+  const pre=raw.slice(0,raw.search(/\d/)), suf=raw.slice(raw.search(/\d/)+m[0].length);
+  const hasDec=m[0].includes(','), dur=900, t0=performance.now();
+  const tick=now=>{
+    const p=Math.min((now-t0)/dur,1), v=(1-Math.pow(1-p,3))*num;
+    el.textContent=pre+(hasDec?v.toFixed(1).replace('.',','):Math.round(v).toLocaleString('pt-BR'))+suf;
+    if(p<1) requestAnimationFrame(tick); else el.textContent=raw;
   };
   requestAnimationFrame(tick);
 }
 function animatePanel(id) {
-  const panel = document.getElementById('panel-'+id);
-  if (!panel) return;
-  panel.querySelectorAll('.kpi').forEach((kpi, i) => {
-    kpi.classList.remove('kpi-in');
-    void kpi.offsetHeight;
-    kpi.style.animationDelay = i*70+'ms';
-    kpi.classList.add('kpi-in');
-    const v = kpi.querySelector('.kpi-value');
-    if (v) setTimeout(() => countUpEl(v), i*70+150);
+  const panel=document.getElementById('panel-'+id); if(!panel) return;
+  panel.querySelectorAll('.kpi').forEach((kpi,i)=>{
+    kpi.classList.remove('kpi-in'); void kpi.offsetHeight;
+    kpi.style.animationDelay=i*70+'ms'; kpi.classList.add('kpi-in');
+    const v=kpi.querySelector('.kpi-value');
+    if(v) setTimeout(()=>countUpEl(v), i*70+150);
   });
 }
 function switchTab(id) {
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('panel-'+id).classList.add('active');
-  ['geral','lc','le','tax','aa','cc','lh'].forEach((t,i) => {
-    if (t === id) document.querySelectorAll('.tab-btn')[i].classList.add('active');
-  });
+  ['geral','lc','le','tax','aa','cc','lh'].forEach((t,i)=>{ if(t===id) document.querySelectorAll('.tab-btn')[i].classList.add('active'); });
   animatePanel(id);
 }
-setTimeout(() => animatePanel('geral'), 100);
 
-// ── VISÃO GERAL ──
-new Chart(document.getElementById('g-invMensal'),{
-  type:'bar',
-  data:{
-    labels:['Jun/25','Jul/25','Aug/25','Sep/25','Oct/25','Nov/25','Dec/25','Jan/26','Feb/26','Mar/26'],
-    datasets:[
-      {label:'Legal Control',data:[0,3008.14,3489.94,2570.17,1235,471.24,2401.99,1875.16,2577.73,3383.56],backgroundColor:'rgba(249,115,22,.7)',borderRadius:4},
-      {label:'Legal Ética',  data:[0,1743.74,3072.58,800.17,318,2321.67,1979.78,870.26,1676.4,0],          backgroundColor:'rgba(239,68,68,.7)',borderRadius:4},
-      {label:'Vigna Tax',    data:[0,0,1726.81,1470.11,519.59,658.96,1122.47,0,0,0],                      backgroundColor:'rgba(234,179,8,.7)',borderRadius:4},
-      {label:'Vigna A.A',    data:[0,1728,1708.23,0,0,0,0,0,0,0],                                          backgroundColor:'rgba(29,78,216,.7)',borderRadius:4},
-    ]
-  },
-  options:{plugins:{legend:{position:'bottom'}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>'R$'+(v/1000).toFixed(0)+'k'}}},responsive:true}
-});
-
-new Chart(document.getElementById('g-pizza'),{
-  type:'doughnut',
-  data:{
-    labels:['Legal Control','Legal Ética','Vigna Tax','Vigna A.A'],
-    datasets:[{data:[21012.93,12782.6,5497.94,3436.23],backgroundColor:['rgba(249,115,22,.85)','rgba(239,68,68,.85)','rgba(234,179,8,.85)','rgba(29,78,216,.85)'],borderColor:'rgba(255,255,255,0.05)',borderWidth:2}]
-  },
-  options:{cutout:'65%',plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:ctx=>' R$ '+Math.round(ctx.parsed).toLocaleString('pt-BR')}}}}
-});
-
-new Chart(document.getElementById('g-contratos'),{
-  type:'bar',
-  data:{labels:MESES,datasets:[
-    {label:'Legal Control',data:LC.map(d=>d.contratos),backgroundColor:'rgba(249,115,22,.8)',borderRadius:4},
-    {label:'Legal Ética',  data:LE.map(d=>d.contratos),backgroundColor:'rgba(239,68,68,.8)',borderRadius:4},
-  ]},
-  options:{plugins:{legend:{position:'bottom'}},scales:{...gO,y:{...gO.y,ticks:{stepSize:1}}},responsive:true}
-});
-
-new Chart(document.getElementById('g-leads-contratos'),{
-  type:'bar',
-  data:{labels:MESES,datasets:[
-    {label:'Total Leads (LC+LE)',data:MESES.map((_,i)=>LC[i].leads+LE[i].leads),backgroundColor:'rgba(249,115,22,.2)',borderRadius:4},
-    {label:'Total Contratos',    data:MESES.map((_,i)=>LC[i].contratos+LE[i].contratos),backgroundColor:'rgba(251,146,60,.9)',borderRadius:4},
-  ]},
-  options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}
-});
-
-const geralBody = document.getElementById('g-resumo-body');
-const resumo=[
-  {nome:'Legal Control',inv:21012.93,cont:5,ltv:108000,cor:'#f97316'},
-  {nome:'Legal Ética',  inv:12782.6, cont:9,ltv:54000, cor:'#ef4444'},
-  {nome:'Vigna Tax',    inv:5497.94, cont:1,ltv:0,     cor:'#eab308'},
-  {nome:'Vigna A.A',    inv:3436.23, cont:0,ltv:0,     cor:'#1d4ed8'},
-  {nome:'Compliance',   inv:0,       cont:0,ltv:0,     cor:'#64748b'},
-  {nome:'Legal Hub',    inv:0,       cont:0,ltv:0,     cor:'#64748b'},
-];
-const totalInv=resumo.reduce((a,b)=>a+b.inv,0);
-resumo.forEach(r=>{
-  const pct=totalInv>0?(r.inv/totalInv*100):0;
-  const roi=r.inv>0&&r.ltv>0?Math.round((r.ltv/r.inv-1)*100)+'%':'—';
-  geralBody.innerHTML+=`<tr><td style="font-weight:600;color:#f1f5f9">${r.nome}</td><td class="num">${r.inv>0?fmtR(r.inv):'—'}</td><td class="num">${r.inv>0?pct.toFixed(1)+'%':'—'}</td><td class="num">${r.cont>0?'<span class="positive">'+r.cont+'</span>':'—'}</td><td class="num">${r.ltv>0?'<span class="positive">'+fmtR(r.ltv)+'</span>':'—'}</td><td class="num">${r.ltv>0?'<span class="positive">'+roi+'</span>':'—'}</td><td style="min-width:160px;padding-right:16px"><div class="bar-wrap"><div class="bar-fill" style="width:${pct}%;background:${r.cor}"></div></div></td></tr>`;
-});
-geralBody.innerHTML+=`<tr class="total-row"><td>TOTAL</td><td class="num">${fmtR(totalInv)}</td><td class="num">100%</td><td class="num positive">15</td><td class="num positive">${fmtR(162000)}</td><td class="num positive">279%</td><td></td></tr>`;
-
-// ── LEGAL CONTROL ──
-new Chart(document.getElementById('lc-funil'),{type:'bar',data:{labels:MESES,datasets:[{label:'Leads',data:LC.map(d=>d.leads),backgroundColor:'rgba(249,115,22,.3)',borderRadius:4},{label:'MQL',data:LC.map(d=>d.mql),backgroundColor:'rgba(249,115,22,.6)',borderRadius:4},{label:'SQL',data:LC.map(d=>d.sql),backgroundColor:'rgba(249,115,22,.9)',borderRadius:4},{label:'Contratos',data:LC.map(d=>d.contratos),backgroundColor:'rgba(249,115,22,1)',borderRadius:4}]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
-new Chart(document.getElementById('lc-inv-lucro'),{type:'bar',data:{labels:MESES,datasets:[{label:'Investimento',data:LC.map(d=>d.investimento),backgroundColor:'rgba(249,115,22,.5)',borderRadius:4},{label:'LTV Projetado',data:LC.map(d=>d.lucro),backgroundColor:'rgba(249,115,22,.9)',borderRadius:4}]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>'R$'+(v/1000).toFixed(0)+'k'}}},responsive:true}});
-new Chart(document.getElementById('lc-custo-lead'),{type:'line',data:{labels:MESES,datasets:[{label:'R$/Lead',...lineOpts('rgba(249,115,22,1)','rgba(249,115,22,.1)'),data:LC.map(d=>d.custo_lead)}]},options:{plugins:{legend:{display:false}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>'R$'+v}}},responsive:true}});
-new Chart(document.getElementById('lc-custo-sql'),{type:'line',data:{labels:MESES,datasets:[{label:'R$/SQL',...lineOpts('rgba(249,115,22,1)','rgba(249,115,22,.15)'),data:LC.map(d=>d.custo_sql)}]},options:{plugins:{legend:{display:false}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>'R$'+v}}},responsive:true}});
-new Chart(document.getElementById('lc-conv'),{type:'bar',data:{labels:MESES,datasets:[{label:'Lead→Contrato %',data:LC.map(d=>d.leads>0?((d.contratos/d.leads)*100).toFixed(1):0),backgroundColor:'rgba(251,146,60,.7)',borderRadius:4}]},options:{plugins:{legend:{display:false}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>v+'%'}}},responsive:true}});
-
-const lcBody=document.getElementById('lc-table-body');
-let s={inv:0,leads:0,mql:0,sql:0,cont:0,lucro:0};
-LC.forEach(d=>{s.inv+=d.investimento;s.leads+=d.leads;s.mql+=d.mql;s.sql+=d.sql;s.cont+=d.contratos;s.lucro+=d.lucro;lcBody.innerHTML+=`<tr><td>${d.mes}</td><td class="num">${fmtR(d.investimento)}</td><td class="num">${n(d.leads)}</td><td class="num">${n(d.mql)}</td><td class="num">${n(d.sql)}</td><td class="num">${d.contratos?'<span class="positive">'+d.contratos+'</span>':'—'}</td><td class="num">${fmtD(d.custo_lead)}</td><td class="num">${fmtD(d.custo_sql)}</td><td class="num">${d.lucro?'<span class="positive">'+fmtR(d.lucro)+'</span>':'—'}</td></tr>`;});
-lcBody.innerHTML+=`<tr class="total-row"><td>TOTAL</td><td class="num">${fmtR(s.inv)}</td><td class="num">${s.leads}</td><td class="num">${s.mql}</td><td class="num">${s.sql}</td><td class="num positive">${s.cont}</td><td class="num">—</td><td class="num">—</td><td class="num positive">${fmtR(s.lucro)}</td></tr>`;
-
-// ── LEGAL ÉTICA ──
-new Chart(document.getElementById('le-funil'),{type:'bar',data:{labels:MESES,datasets:[{label:'Leads',data:LE.map(d=>d.leads),backgroundColor:'rgba(239,68,68,.25)',borderRadius:4},{label:'MQL',data:LE.map(d=>d.mql),backgroundColor:'rgba(239,68,68,.55)',borderRadius:4},{label:'SQL',data:LE.map(d=>d.sql),backgroundColor:'rgba(239,68,68,.85)',borderRadius:4},{label:'Contratos',data:LE.map(d=>d.contratos),backgroundColor:'rgba(239,68,68,1)',borderRadius:4}]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
-new Chart(document.getElementById('le-inv-lucro'),{type:'bar',data:{labels:MESES,datasets:[{label:'Investimento',data:LE.map(d=>d.investimento),backgroundColor:'rgba(239,68,68,.4)',borderRadius:4},{label:'LTV Projetado',data:LE.map(d=>d.lucro),backgroundColor:'rgba(239,68,68,.85)',borderRadius:4}]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>'R$'+(v/1000).toFixed(0)+'k'}}},responsive:true}});
-new Chart(document.getElementById('le-custo-lead'),{type:'line',data:{labels:MESES,datasets:[{label:'R$/Lead',...lineOpts('rgba(239,68,68,1)','rgba(239,68,68,.1)'),data:LE.map(d=>d.custo_lead)}]},options:{plugins:{legend:{display:false}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>'R$'+v}}},responsive:true}});
-new Chart(document.getElementById('le-contratos'),{type:'bar',data:{labels:MESES,datasets:[{label:'Contratos',data:LE.map(d=>d.contratos),backgroundColor:'rgba(239,68,68,.8)',borderRadius:4}]},options:{plugins:{legend:{display:false}},scales:{...gO,y:{...gO.y,ticks:{stepSize:1}}},responsive:true}});
-
-const leBody=document.getElementById('le-table-body');
-let sl={inv:0,leads:0,mql:0,sql:0,cont:0,lucro:0};
-LE.forEach(d=>{sl.inv+=d.investimento;sl.leads+=d.leads;sl.mql+=d.mql;sl.sql+=d.sql;sl.cont+=d.contratos;sl.lucro+=d.lucro;leBody.innerHTML+=`<tr><td>${d.mes}</td><td class="num">${fmtR(d.investimento)}</td><td class="num">${n(d.leads)}</td><td class="num">${n(d.mql)}</td><td class="num">${n(d.sql)}</td><td class="num">${d.contratos?'<span class="positive">'+d.contratos+'</span>':'—'}</td><td class="num">${fmtD(d.custo_lead)}</td><td class="num">${d.lucro?'<span class="positive">'+fmtR(d.lucro)+'</span>':'—'}</td></tr>`;});
-leBody.innerHTML+=`<tr class="total-row"><td>TOTAL</td><td class="num">${fmtR(sl.inv)}</td><td class="num">${sl.leads}</td><td class="num">${sl.mql}</td><td class="num">${sl.sql}</td><td class="num positive">${sl.cont}</td><td class="num">—</td><td class="num positive">${fmtR(sl.lucro)}</td></tr>`;
-
-// ── VIGNA TAX ──
-new Chart(document.getElementById('tax-organic'),{type:'line',data:{labels:TAX.map(d=>d.mes),datasets:[{label:'Organic Social',...lineOpts('rgba(234,179,8,1)','rgba(234,179,8,.1)'),data:TAX.map(d=>d.social)},{label:'Organic Search',...lineOpts('rgba(234,179,8,.7)','rgba(234,179,8,.05)'),data:TAX.map(d=>d.search)}]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
-const taxCL=TAX.filter(d=>d.leads_pagos+d.leads_org>0);
-new Chart(document.getElementById('tax-funil'),{type:'bar',data:{labels:taxCL.map(d=>d.mes),datasets:[{label:'Leads Pagos',data:taxCL.map(d=>d.leads_pagos),backgroundColor:'rgba(234,179,8,.45)',borderRadius:4},{label:'Leads Org.',data:taxCL.map(d=>d.leads_org),backgroundColor:'rgba(234,179,8,.65)',borderRadius:4},{label:'MQL',data:taxCL.map(d=>d.mql),backgroundColor:'rgba(234,179,8,.9)',borderRadius:4},{label:'Contratos',data:taxCL.map(d=>d.contratos),backgroundColor:'rgba(234,179,8,1)',borderRadius:4}]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
-const taxBody=document.getElementById('tax-table-body');
-TAX.forEach(d=>{taxBody.innerHTML+=`<tr><td>${d.mes}</td><td class="num">${fmtR(d.investimento)}</td><td class="num">${n(d.leads_pagos)}</td><td class="num">${n(d.leads_org)}</td><td class="num">${n(d.mql)}</td><td class="num">${n(d.sql)}</td><td class="num">${d.contratos?'<span class="positive">'+d.contratos+'</span>':'—'}</td><td class="num">${n(d.social)}</td><td class="num">${n(d.search)}</td></tr>`;});
-
-// ── VIGNA A.A ──
-new Chart(document.getElementById('aa-organic'),{type:'line',data:{labels:AA.map(d=>d.mes),datasets:[{label:'Organic Social',...lineOpts('rgba(29,78,216,1)','rgba(29,78,216,.1)'),data:AA.map(d=>d.social)},{label:'Organic Search',...lineOpts('rgba(29,78,216,.65)','rgba(29,78,216,.05)'),data:AA.map(d=>d.search)}]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
-new Chart(document.getElementById('aa-receita'),{type:'bar',data:{labels:AA.map(d=>d.mes),datasets:[{label:'Receita Ads (R$)',data:AA.map(d=>d.receita_ads),backgroundColor:'rgba(29,78,216,.7)',borderRadius:6}]},options:{plugins:{legend:{display:false}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>'R$'+(v/1000).toFixed(1)+'k'}}},responsive:true}});
-const aaBody=document.getElementById('aa-table-body');
-AA.forEach(d=>{aaBody.innerHTML+=`<tr><td>${d.mes}</td><td class="num">${n(d.social)}</td><td class="num">${n(d.search)}</td><td class="num">${d.receita_ads>0?'<span class="positive">'+fmtR(d.receita_ads)+'</span>':'—'}</td></tr>`;});
-
-// ── THEME TOGGLE ──
+// ══════════════════════════════════════════════
+// THEME
+// ══════════════════════════════════════════════
 function applyTheme(light) {
   document.body.classList.toggle('light', light);
-  const btn = document.getElementById('theme-btn');
-  btn.textContent = light ? 'Dark' : 'Light';
-  const grid = light ? '#e2e8f0' : '#1e2535';
-  const txt  = light ? '#94a3b8' : '#64748b';
-  Object.values(Chart.instances).forEach(c => {
-    ['x','y','y1'].forEach(ax => {
-      if (c.options.scales?.[ax]) {
-        c.options.scales[ax].grid = {...(c.options.scales[ax].grid||{}), color: grid};
-        c.options.scales[ax].ticks = {...(c.options.scales[ax].ticks||{}), color: txt};
+  document.getElementById('theme-btn').textContent = light?'Dark':'Light';
+  const grid=light?'#e2e8f0':'#1e2535', txt=light?'#94a3b8':'#64748b';
+  Object.values(charts).forEach(c=>{
+    if(!c) return;
+    ['x','y'].forEach(ax=>{
+      if(c.options.scales?.[ax]){
+        c.options.scales[ax].grid={...(c.options.scales[ax].grid||{}),color:grid};
+        c.options.scales[ax].ticks={...(c.options.scales[ax].ticks||{}),color:txt};
       }
     });
-    if (c.options.plugins?.legend?.labels) c.options.plugins.legend.labels.color = txt;
+    if(c.options.plugins?.legend?.labels) c.options.plugins.legend.labels.color=txt;
     c.update('none');
   });
 }
 function toggleTheme() {
-  const isLight = !document.body.classList.contains('light');
-  localStorage.setItem('vigna-theme', isLight ? 'light' : 'dark');
+  const isLight=!document.body.classList.contains('light');
+  localStorage.setItem('vigna-theme', isLight?'light':'dark');
   applyTheme(isLight);
 }
-// Load saved preference
-(function(){
-  const saved = localStorage.getItem('vigna-theme');
-  if (saved === 'light') applyTheme(true);
-})();
+(function(){ if(localStorage.getItem('vigna-theme')==='light') applyTheme(true); })();
+
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+renderPeriodChips();
+renderCharts();
+renderAllTables();
+updateAllKPIs();
+setTimeout(()=>animatePanel('geral'), 100);
 </script>
 </body>
 </html>
